@@ -4,14 +4,12 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output
 } from '@angular/core';
-import { first, take } from 'rxjs/operators';
-import { IDocRequest, IFile } from 'src/app/models/case.model';
-import { CommonService } from '../../services/common/common.service';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { IFile } from 'src/app/models/case.model';
 import { DocumentService } from '../../services/docService/document.service';
 import { CddServiceService } from '../../services/httpServices/cdd/cdd-service.service';
 
@@ -21,11 +19,8 @@ import { CddServiceService } from '../../services/httpServices/cdd/cdd-service.s
     styleUrls: ['./document-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentListComponent implements OnInit, OnDestroy, OnChanges {
-    @Input() set docList(val: any) {
-        console.log(val);
-        this.docList1 = val;
-    }
+export class DocumentListComponent implements OnInit, OnDestroy {
+    @Input() docList: any;
     @Input() title?: string;
     fileList: IFile[] = [];
     @Output() activeDocument = new EventEmitter<any>();
@@ -38,16 +33,19 @@ export class DocumentListComponent implements OnInit, OnDestroy, OnChanges {
     completedDoc: any;
     selectedFile: IFile;
     docList1: any;
+    moveToNextDocTypeSub: Subscription;
+    selectedStepDataSub: Subscription;
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.getDocumentList();
+        this.moveToNextDocument();
+    }
 
-    ngOnChanges(): void {
-        this.cddServiceService
+    getDocumentList(): void {
+        this.selectedStepDataSub = this.cddServiceService
             .getSelectedStepData()
-            .pipe(take(1))
             .subscribe((res: any) => {
-                console.log('gaurav ');
-                // this.docList1 = res.types;
+                this.docList1 = res.types;
                 if (this.docList1.length > 0) {
                     this.fileList = this.docList1;
                     const activeDoc = this.docList1.find((file: any) => !file.files?.length);
@@ -57,41 +55,29 @@ export class DocumentListComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 this.cdRef.markForCheck();
             });
-
-        this.documentService.getMoveToNextDocType().subscribe((res: any) => {
-            console.log('am I here?', res);
-
-            console.log('on init');
-            if (res) {
-                this.nextDoc();
-            }
-        });
-
-        // this.documentService
-        //     .getMoveToNextDocType()
-        //     .pipe(take(1))
-        //     .subscribe(res => {
-        //         console.log('am I here?');
-
-        //         if (res) {
-        //             console.log('sachin');
-        //             this.nextDoc();
-        //         }
-        //     });
     }
-    ngOnDestroy(): void {}
 
-    selectedDocument(doc: IFile) {
-        const obj = this.fileList.find(file => file.active);
-        if (obj) {
-            obj.active = false;
+    moveToNextDocument(): void {
+        this.moveToNextDocTypeSub = this.documentService
+            .getMoveToNextDocType()
+            .subscribe((res: any) => {
+                if (res) {
+                    this.nextDocument();
+                }
+            });
+    }
+
+    selectedDocument(document: IFile): void {
+        const selectedFile: IFile | undefined = this.fileList.find((file: IFile) => file.active);
+        if (selectedFile) {
+            selectedFile.active = false;
         }
-        doc.active = true;
-        this.selectedFile = doc;
-        this.activeDocument.emit(doc);
+        document.active = true;
+        this.selectedFile = document;
+        this.activeDocument.emit(document);
     }
 
-    nextDoc() {
+    nextDocument(): void {
         const index = this.fileList.findIndex(file => file.active);
         if (index >= 0) {
             this.fileList[index].active = false;
@@ -104,5 +90,10 @@ export class DocumentListComponent implements OnInit, OnDestroy, OnChanges {
             }
         }
         this.cdRef.markForCheck();
+    }
+
+    ngOnDestroy(): void {
+        this.moveToNextDocTypeSub?.unsubscribe();
+        this.selectedStepDataSub?.unsubscribe();
     }
 }

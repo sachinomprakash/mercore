@@ -1,19 +1,11 @@
 import { KycService } from './../../utils/services/httpServices/kyc.service';
 import { DocumentService } from './../../utils/services/docService/document.service';
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    DoCheck,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import { Component, DoCheck, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { CommonService } from 'src/app/utils/services/common/common.service';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
 import { ActivatedRoute } from '@angular/router';
-import { CDDDocRequests } from 'src/app/utils/constants/app.constant';
-import { Case, IDocRequest } from 'src/app/models/case.model';
+import { Case } from 'src/app/models/case.model';
 import { ProgresssummaryComponent } from '../progresssummary/progresssummary.component';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -29,7 +21,6 @@ import { ConnectedIndividualsService } from 'src/app/utils/services/httpServices
             useValue: { displayDefaultIndicatorType: false }
         }
     ]
-    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CddWrapperComponent implements OnInit, DoCheck {
     selectedIndex: number = 0;
@@ -56,8 +47,7 @@ export class CddWrapperComponent implements OnInit, DoCheck {
         public dialog: MatDialog,
         private documentService: DocumentService,
         private connectedIndividualsService: ConnectedIndividualsService,
-        private kycService: KycService,
-        private cdRef: ChangeDetectorRef
+        private kycService: KycService
     ) {}
     @ViewChild('stepper') private myStepper: MatStepper;
     ngOnInit(): void {
@@ -109,8 +99,7 @@ export class CddWrapperComponent implements OnInit, DoCheck {
         }
     }
 
-    move(index: any) {
-        console.log('move', index);
+    move(index: number): void {
         this.selectedIndex = index;
         this.selectedStepObj = this.entityDocs[index];
         this.cddServiceService.setSelectedStepData(this.entityDocs[index]);
@@ -131,7 +120,6 @@ export class CddWrapperComponent implements OnInit, DoCheck {
             this.case = new Case(res.result);
             this.getAllQuestionList();
             this.getAllPeople();
-            this.cdRef.markForCheck();
         });
     }
 

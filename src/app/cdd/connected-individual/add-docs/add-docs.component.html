@@ -12,7 +12,11 @@
 </div>
 <div class="row" *ngIf="showNodata">
     <div class="col-md-5 col-xl-5 col-sm-12 col-xs-12 pt-3">
-        <app-document-list (activeDocument)="activeDoc($event)" (onDocComplete)="forward()">
+        <app-document-list
+            [docList]="personDocuments"
+            (activeDocument)="activeDoc($event)"
+            (onDocComplete)="forward()"
+        >
         </app-document-list>
     </div>
     <div class="col-md-7 col-xl-7 col-sm-12 col-xs-12 pt-2">

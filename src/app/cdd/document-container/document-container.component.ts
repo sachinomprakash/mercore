@@ -3,12 +3,12 @@ import {
     Component,
     Input,
     OnInit,
-    OnChanges,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    OnDestroy
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { take } from 'rxjs/operators';
-import { CDDRequest } from 'src/app/utils/constants/cdd.constants';
 import { modulePath } from 'src/app/utils/constants/route.constant';
 import { CommonService } from 'src/app/utils/services/common/common.service';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
@@ -19,11 +19,14 @@ import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-s
     styleUrls: ['./document-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentContainerComponent implements OnInit, OnChanges {
+export class DocumentContainerComponent implements OnInit, OnDestroy {
     @Input() entityId: any;
     @Input() caseId: any;
     files: any;
     stepInfo: any;
+
+    selectedStepDataSub: Subscription;
+
     constructor(
         private commonService: CommonService,
         private router: Router,
@@ -31,32 +34,36 @@ export class DocumentContainerComponent implements OnInit, OnChanges {
         private cdRef: ChangeDetectorRef
     ) {}
     ngOnInit(): void {
-        this.cddServiceService
+        this.selectedStepDataSub = this.cddServiceService
             .getSelectedStepData()
-            .pipe(take(1))
             ?.subscribe((res: any) => {
-                console.log('console', res);
                 this.stepInfo = res;
                 this.cdRef.markForCheck();
             });
     }
-    ngOnChanges(): void {}
 
-    returnHome() {
+    returnHome(): void {
         this.router.navigateByUrl(`/${modulePath.home}`);
     }
-    forward() {
+
+    forward(): void {
         this.commonService.moveStep({ move: true });
     }
-    back() {
+
+    back(): void {
         this.commonService.moveStep({ move: false });
     }
-    activeDoc(ev: any) {
+
+    activeDoc(ev: any): void {
         this.findFiles(ev);
     }
 
-    findFiles(selectedDoc: any) {
+    findFiles(selectedDoc: any): void {
         this.files = this.stepInfo.types.find((doc: any) => doc.name === selectedDoc.name);
         this.commonService.getLatestValue(this.files);
+    }
+
+    ngOnDestroy(): void {
+        this.selectedStepDataSub?.unsubscribe();
     }
 }

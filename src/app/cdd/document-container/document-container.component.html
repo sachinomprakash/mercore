@@ -30,9 +30,9 @@
             <div class="row">
                 <div class="col-md-5 col-xl-5 col-sm-12 col-xs-12 pt-3">
                     <app-document-list
+                        [docList]="stepInfo.types"
                         (activeDocument)="activeDoc($event)"
                         (onDocComplete)="forward()"
-                        [docList]="stepInfo.types"
                     ></app-document-list>
                 </div>
 
