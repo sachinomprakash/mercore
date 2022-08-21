@@ -1,0 +1,41 @@
+<div class="text-center head pt-4 mb-4">
+    <div class="text-center">
+        <h4 class="mb-2">{{ showNodata ? 'Start uploading' : 'No action required' }}</h4>
+    </div>
+    <div class="info text-center">
+        <p *ngIf="showNodata">To proceed please upload the documents requested below.</p>
+        <p *ngIf="!showNodata">
+            Connected individuals will be invited to verify their identify via Onfido, Mercore's
+            identity verification provider.
+        </p>
+    </div>
+</div>
+<div class="row" *ngIf="showNodata">
+    <div class="col-md-5 col-xl-5 col-sm-12 col-xs-12 pt-3">
+        <app-document-list
+            (activeDocument)="activeDoc($event)"
+            [docList]="personDocuments"
+            (onDocComplete)="forward()"
+        >
+        </app-document-list>
+    </div>
+    <div class="col-md-7 col-xl-7 col-sm-12 col-xs-12 pt-2">
+        <app-upload-container
+            [uploadComponent]="'addDocs'"
+            [entityId]="entityId"
+            [personInfo]="personInfo"
+            [docFiles]="files"
+        ></app-upload-container>
+    </div>
+</div>
+<ng-container *ngIf="!showNodata">
+    <div class="noData-req">
+        <img src="assets/images/empty-data.svg" alt="info-circle" />
+    </div>
+    <h3 class="text-center p-3">No documents requested</h3>
+    <div class="w-50 m-auto">
+        <button mat-flat-button color="primary" class="w-100 my-4" (click)="forward()">
+            Continue
+        </button>
+    </div>
+</ng-container>

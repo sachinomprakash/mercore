@@ -1,0 +1,15 @@
+version: 0.2
+phases:
+    install:
+        runtime-versions:
+            nodejs: 14
+    build:
+        commands:
+            - npm install
+            - npm run build:staging
+    post_build:
+        commands:
+            - ls
+            - ls dist/mercore/
+            - aws s3 cp dist/mercore/ s3://$QA_USER_FRONTEND_S3_BUCKET/ --recursive
+            - aws cloudfront create-invalidation --distribution-id $DID --paths "/*"

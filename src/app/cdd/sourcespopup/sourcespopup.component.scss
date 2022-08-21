@@ -1,0 +1,96 @@
+.request-card {
+    box-shadow: 0px 5px 30px rgba(40, 50, 73, 0.04);
+    .sources-of-wealith-input {
+        background-color: var(--color-secondary);
+        border-radius: 5px;
+        padding: 21px 7px;
+        border-left: 5px solid #dde3ec;
+    }
+    &_title {
+        font-size: 19px;
+        padding-bottom: 5px;
+    }
+    .data {
+        background-color: var(--color-secondary-contrast);
+        padding: 10px 17px;
+        border-radius: 6px;
+        align-items: center;
+        width: 100%;
+        label {
+            color: #7a8190;
+            font-size: 12px;
+            font-family: Inter_bold;
+            padding-left: 5px;
+            margin-bottom: 0;
+        }
+        p {
+            font-size: 12px;
+            // color:var(--color-secondary-shadee)!important;
+            color: #7a8190;
+            font-family: Inter-Medium;
+            line-height: 17px;
+            padding-right: 112px;
+            // padding-left: 19px;
+        }
+        ul li {
+            font-size: 12px;
+            color: #7a8190;
+            font-family: Inter-Medium;
+            padding-right: 112px;
+        }
+        .list {
+            padding-left: 18px !important;
+        }
+    }
+    // .dropdown  .mat-form-field{
+    //     width: 410px!important;
+    //   }
+}
+::ng-deep .custom-frame {
+    & .mat-checkbox-background,
+    .mat-checkbox-frame {
+        border-radius: 70% !important;
+    }
+    .form-group {
+        width: 300px !important;
+    }
+}
+::ng-deep {
+    textarea.form-control::placeholder {
+        font-size: 14px;
+        font-family: Inter-Regular;
+        color: #9ca1ab;
+    }
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+        background: white !important;
+        border-radius: 5px;
+    }
+    .source .mat-form-field-appearance-outline .mat-form-field-infix {
+        font-size: 13px;
+        font-family: Inter-Regular;
+        color: #9ca1ab;
+        padding-top: 6px;
+    }
+    textarea.form-control {
+        width: 400 !important;
+    }
+    textarea.form-control {
+        font-size: 13px !important;
+        font-family: Inter-Regular;
+        color: #161e30 !important;
+        padding-top: 11px;
+    }
+    .source-checkbox
+        .mat-checkbox-checked
+        .mat-checkbox-layout
+        .mat-checkbox-inner-container
+        .mat-checkbox-background {
+        background-color: #4caf50 !important;
+    }
+    .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+        transform: unset !important;
+    }
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+        letter-spacing: unset;
+    }
+}

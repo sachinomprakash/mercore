@@ -1,0 +1,27 @@
+.status-btn {
+    border-radius: 30px;
+    padding: 4px 18px;
+    border: none;
+    font-size: 12px;
+    font-family: Inter-Regular;
+}
+.inprogress {
+    background-color: #ffa149;
+    color: var(--color-secondary-contrast);
+}
+.uploaded {
+    background: #ecfdf3;
+    color: var(--color-success-shade) !important;
+}
+.outstanding {
+    background: #fef6ee;
+    color: #b93815;
+}
+.completed {
+    background: var(--color-success-shade) !important;
+    color: var(--color-tertiary-contrast);
+}
+.submited {
+    background: #bac0ca;
+    color: var(--color-tertiary-contrast);
+}

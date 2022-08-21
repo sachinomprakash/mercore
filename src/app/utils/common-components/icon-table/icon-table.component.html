@@ -1,0 +1,53 @@
+<div class="table-responsive w-100 mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let header of tableHeader">
+                    <td>{{ header.name }}</td>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let record of records; let i = index">
+                <tr class="table-body">
+                    <td *ngFor="let header of tableHeader">
+                        <ng-container [ngSwitch]="header.type">
+                            <ng-container *ngSwitchCase="'string'">
+                                {{ record[header.key] || 'NA' }}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'concat-string'">
+                                {{ record.first_name + ' ' + record.last_name || 'NA' }}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'array'">
+                                <div *ngFor="let arr of record.roles; let last = last">
+                                    {{ arr.name.toString() || 'NA'
+                                    }}<ng-container *ngIf="!last">,</ng-container>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'action'">
+                                <div
+                                    class="table_wrap_content_icon d-flex float-end"
+                                    *ngIf="header.value === 'Edit'"
+                                >
+                                    <img
+                                        src="assets/images/create.png"
+                                        class="px-2 pointer"
+                                        alt="mercore-icon"
+                                        (click)="onClickAction(record, 'Edit')"
+                                    />
+                                    <img
+                                        src="assets/images/delete.svg"
+                                        alt="mercore-icon"
+                                        class="pointer"
+                                        *ngIf="!record.defaultUser"
+                                        (click)="onClickAction(record, 'Delete')"
+                                    />
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

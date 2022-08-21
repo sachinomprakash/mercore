@@ -1,0 +1,62 @@
+$component-font-size: 14px;
+.request-card {
+    &_trade-wrap {
+        border: 1px solid var(--color-primary-contrast);
+        border-radius: 9px;
+        p {
+            color: var(--gray-background);
+            font-size: $component-font-size;
+            font-family: Inter-Regular;
+            margin-bottom: 15px;
+        }
+        &_dropdown {
+            height: 20vh;
+            overflow-y: scroll;
+            display: block;
+            overflow-x: hidden;
+        }
+    }
+}
+mat-icon {
+    img {
+        width: 100% !important;
+        height: 17px;
+    }
+}
+// ::ng-deep {
+//     // .mat-form-field-infix{ padding-top: 4px!important;}
+// }
+// ::ng-deep {
+//     .mat-form-field-appearance-outline .mat-form-field-infix {
+//         padding-top: 6px !important;
+//     }
+// }
+
+.account-type {
+    ::ng-deep {
+        .mat-checkbox-inner-container {
+            margin-bottom: 4px;
+        }
+    }
+}
+
+.counts {
+    position: absolute;
+    top: 16px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary);
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 12px;
+    padding-top: 1px;
+}
+
+::ng-deep {
+    .request-card_trade-wrap .mat-form-field-appearance-outline .mat-form-field-infix {
+        margin-right: 12px;
+    }
+}

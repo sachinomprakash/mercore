@@ -1,0 +1,56 @@
+<div class="col-md-6 mx-auto text-center head pt-4 mb-4">
+    <div class="text-center">
+        <h4>Sources Of Wealth</h4>
+    </div>
+    <div class="info text-center mt-2">
+        <p>
+            To proceed please click on the button below to start adding information pertaining to
+            the source of wealth for this individual.
+        </p>
+        <div class="table_wrap" *ngIf="soucesDocs.length > 0">
+            <div class="table_wrap_head">Sources of Wealth</div>
+            <div class="table_wrap_content">
+                <div
+                    class="d-flex justify-content-between align-items-center"
+                    *ngFor="let docs of soucesDocs"
+                >
+                    <span>
+                        {{ docs.name }}
+                    </span>
+                    <div class="table_wrap_content_icon d-flex">
+                        <img
+                            src="assets/images/create.png"
+                            class="px-4"
+                            alt="mercore-icon"
+                            (click)="staffMember(docs, 'edit')"
+                        />
+                        <img
+                            src="assets/images/delete.svg"
+                            class="px-4"
+                            alt="mercore-icon"
+                            (click)="deleteSourcesOfWealth(docs)"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button
+            mat-stroked-button
+            class=""
+            [ngClass]="soucesDocs.length > 0 ? 'sources-btn mt-5 float-right' : 'sources-btn mt-5'"
+            (click)="staffMember()"
+        >
+            Add Sources of Wealth
+        </button>
+    </div>
+    <button
+        type="button"
+        color="primary"
+        mat-flat-button
+        class="w-100 mt-4"
+        *ngIf="soucesDocs.length > 0"
+        (click)="next()"
+    >
+        Save and continue
+    </button>
+</div>

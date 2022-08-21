@@ -1,0 +1,92 @@
+<div class="upload-document">
+    <label class="w-100" for="file-input">
+        <div class="document-file-upload py-5" appDnd (fileDropped)="onFileDropped($event)">
+            <p class="text-center">
+                <mat-icon><img src="assets/images/upload-doc.svg"/></mat-icon>
+            </p>
+            <p class="text-center mt-3 para">
+                <span class="text-black font-weight-bolder">Click to upload</span> or drop files
+                here.
+                <br />PDF,&nbsp;PNG,&nbsp;JPG,&nbsp;DOC,&nbsp;DOCX,&nbsp;CSV,&nbsp;XLS&nbsp;or&nbsp;XLSX&nbsp;(max.10MB)<br /><span
+                    class="text-black"
+                    >You can add more than one file.</span
+                >
+            </p>
+        </div>
+    </label>
+    <input
+        type="file"
+        name="file-input"
+        id="file-input"
+        class="file-input__input"
+        multiple
+        (change)="fileBrowseHandler($event)"
+        accept=".xls,.xlsx, image/jpg, image/png,.doc, .docx,.pdf, text/csv"
+    />
+    <ng-container *ngIf="files?.length">
+        <div class="uploaded-documents mt-4">
+            <p class="text-black font-weight-bolder">
+                Uploaded Documents<span class="badge ml-2">{{ validFilesCount }}</span>
+            </p>
+        </div>
+
+        <div class="document-file mt-3 p-3" *ngIf="!files?.length">
+            <p class="text-center pt-5">
+                <mat-icon><img src="assets/images/empty-doc.svg" alt=""/></mat-icon>
+            </p>
+            <p class="text-center pb-5">No documents uploaded yet</p>
+        </div>
+
+        <div class="uploaded-files mt-1 p-3">
+            <div class="file-list" *ngFor="let file of files; let i = index">
+                <mat-card class="mb-3 card-contain">
+                    <div class="file-details d-flex justify-content-between align-item-center">
+                        <div class="file-details m-1 d-flex align-item-center">
+                            <mat-icon
+                                ><img class="doc-icon" src="assets/images/doc.svg" alt=""
+                            /></mat-icon>
+                            <p class="ml-1 p-0 m-0">{{ file?.name || file?.original_name }}</p>
+                        </div>
+                        <div class="file-size align-item-center">
+                            <p>
+                                <span [ngClass]="file?.errored ? 'size-error' : ''">{{
+                                    formatBytes(file?.file_size || file?.size)
+                                }}</span>
+                                <mat-icon (click)="deleteFile(file, i)" class="pointer"
+                                    ><img class="ml-1" src="assets/images/delete file.svg" />
+                                </mat-icon>
+                            </p>
+                        </div>
+                    </div>
+                    <app-progress
+                        [errored]="file?.errored"
+                        [progress]="file?.progress"
+                    ></app-progress>
+                </mat-card>
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="uploaded-documents mt-4">
+        <p class="text-black font-weight-bolder mb-2">
+            Please provide any additional comments <span class="muted-text">(Optional)</span>
+        </p>
+        <mat-form-field class="w-100" appearance="outline">
+            <textarea
+                matInput
+                placeholder="Add comments..."
+                class="text-dark"
+                [(ngModel)]="comments"
+            ></textarea>
+        </mat-form-field>
+    </div>
+    <button
+        mat-flat-button
+        color="primary"
+        [disabled]="validFilesCount === 0"
+        (click)="setDocumentCompleted()"
+        class="request-card_next-btn mt-4 w-100"
+    >
+        Save and continue
+    </button>
+</div>

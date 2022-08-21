@@ -1,0 +1,140 @@
+<app-header-component></app-header-component>
+<div class="s-layout">
+    <!-- Sidebar -->
+    <div class="s-layout__sidebar">
+        <a class="s-sidebar__trigger">
+            <mat-icon>menu</mat-icon>
+        </a>
+        <nav class="s-sidebar__nav p-3">
+            <div class="sideMenu">
+                <div class="stepbar p-sm-2 mt-2">
+                    <div class="case-details">
+                        <p>
+                            Application : <span>{{ case?.application_number }}</span>
+                        </p>
+                        <p>
+                            Company : <span>{{ case?.company_name }}</span>
+                        </p>
+                    </div>
+
+                    <mat-vertical-stepper
+                        *ngIf="entityDocs.length > 0"
+                        #stepper
+                        (selectionChange)="move($event.selectedIndex)"
+                        [selectedIndex]="stepperIndex"
+                    >
+                        <ng-template matStepperIcon="edit">
+                            <mat-icon>edit</mat-icon>
+                        </ng-template>
+                        <ng-template matStepperIcon="done">
+                            <mat-icon>done</mat-icon>
+                        </ng-template>
+                        <div *ngFor="let docType of entityDocs">
+                            <div [ngSwitch]="docType.name">
+                                <mat-step
+                                    *ngSwitchDefault
+                                    [aria-labelledby]="docType.completed ? 'done' : 'edit'"
+                                    [state]="docType.completed ? 'done' : 'edit'"
+                                    label="docType.name"
+                                >
+                                    <ng-template matStepLabel>
+                                        <div class="stepper-label">
+                                            {{ docType.name }}
+                                        </div>
+                                    </ng-template>
+                                </mat-step>
+                                <mat-step
+                                    *ngSwitchCase="'Additional Requests'"
+                                    [aria-labelledby]="
+                                        addtionalRequestValid ||
+                                        (allQuestionhaveAnswerStatus &&
+                                            allQuestionhaveAnswerStatus.length) == 0
+                                            ? 'done'
+                                            : 'edit'
+                                    "
+                                    [state]="
+                                        addtionalRequestValid ||
+                                        (allQuestionhaveAnswerStatus &&
+                                            allQuestionhaveAnswerStatus.length) == 0
+                                            ? 'done'
+                                            : 'edit'
+                                    "
+                                    label="Additional Requests"
+                                >
+                                    Additional Requests
+                                </mat-step>
+                            </div>
+                        </div>
+
+                        <!-- <mat-step
+                            [aria-labelledby]="ownershipValidFiles ? 'done' : 'edit'"
+                            [state]="ownershipValidFiles ? 'done' : 'edit'"
+                            label="Ownership Structure"
+                        >
+                            Ownership Structure
+                        </mat-step>
+                        -->
+                    </mat-vertical-stepper>
+                </div>
+                <div>
+                    <button class="summary mx-auto d-flex" (click)="openDialog()">
+                        <img class="mr-2" src="assets/images/clock.svg" />Show Progress Summary
+                    </button>
+                </div>
+                <!-- <div class="s-sidebar__bottom mx-auto d-flex text-center">
+                    <img src="assets/images/info-circle.svg" alt="info-circle" />
+                    <p class="text-white ml-2">Having troubles? <span>Get help</span></p>
+                </div> -->
+            </div>
+        </nav>
+    </div>
+    <!-- Content -->
+    <main class="s-layout__content pt-5">
+        <p class="information">
+            <img src="assets/images/info-circle.png" alt="info-circle" /> Your information will save
+            as you fill out the application.
+        </p>
+        <ng-container *ngIf="case && selectedStepObj">
+            <div class="form-screen">
+                <span [ngSwitch]="selectedStepObj.name">
+                    <div *ngSwitchCase="'Connected Individuals'">
+                        <app-connected-individual
+                            [entityId]="case.entity_id"
+                            [formId]="case.legal_entity_form_id"
+                        ></app-connected-individual>
+                    </div>
+                    <div *ngSwitchCase="'Additional Requests'">
+                        <app-additional-request
+                            [entityId]="case.entity_id"
+                            [allStepsValid]="allStepsvalid"
+                            (onNext)="move(4)"
+                            (addtionalRequestStepperValid)="addtionalRequestStepperStatus($event)"
+                        >
+                        </app-additional-request>
+                    </div>
+                    <div *ngSwitchDefault>
+                        <app-document-container [entityId]="case.entity_id" [caseId]="caseId">
+                        </app-document-container>
+                    </div>
+                    <!-- <div *ngSwitchCase="0">
+                        <app-company-profile [companyDocs]="companyDocs" [entityId]="case.entity_id" [caseId]="caseId">
+                        </app-company-profile>
+                    </div>
+                    <div *ngSwitchCase="1">
+                        <app-ownership-structure [ownershipDocs]="ownershipDocs" [entityId]="case.entity_id"
+                            [caseId]="caseId"></app-ownership-structure>
+                    </div>
+                    <div *ngSwitchCase="2">
+                    </div>
+                    <div *ngSwitchCase="3">
+                       
+                    </div>
+                    <div *ngSwitchCase="4">
+                        <app-cip-thankyou [applicationRef]="case?.application_number" [component]="'cdd'">
+                        </app-cip-thankyou>
+                    </div> -->
+                </span>
+            </div>
+        </ng-container>
+    </main>
+</div>

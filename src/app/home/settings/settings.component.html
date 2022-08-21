@@ -1,0 +1,197 @@
+<mat-card class="main-wrap p-4">
+    <div class="bold-link mb-4">
+        <a [routerLink]="loginPath">
+            <img src="assets/images/back.svg" alt="email" matSuffix class="back" />
+            back</a
+        >
+    </div>
+    <mat-card-title>Settings</mat-card-title>
+    <mat-card-subtitle>Manage your profile and settings</mat-card-subtitle>
+    <mat-card-actions>
+        <ng-container class="d-flex justify-content-between">
+            <form [formGroup]="settingsForm">
+                <div class="main-wrap p-4">
+                    <mat-card-title>About you</mat-card-title>
+                    <mat-card-actions>
+                        <ng-container class="d-flex justify-content-between">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-4">
+                                    <mat-form-field appearance="outline" class="w-100 mt-3">
+                                        <mat-label>First Name</mat-label>
+                                        <input
+                                            matInput
+                                            type="text"
+                                            placeholder="First Name"
+                                            formControlName="firstName"
+                                            maxlength="85"
+                                        />
+                                        <mat-error *ngIf="errorHandling('firstName', 'required')">
+                                            First name is required
+                                        </mat-error>
+                                        <mat-error *ngIf="errorHandling('firstName', 'minlength')">
+                                            First name min length should be of 3 characters
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4">
+                                    <mat-form-field appearance="outline" class="w-100 mt-3">
+                                        <mat-label>Last Name</mat-label>
+                                        <input
+                                            matInput
+                                            type="text"
+                                            placeholder="Last Name"
+                                            formControlName="lastName"
+                                            maxlength="85"
+                                        />
+                                        <mat-error *ngIf="errorHandling('lastName', 'required')">
+                                            Last name is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-4 position-phone-select w-100">
+                                    <div
+                                        [ngClass]="{
+                                            'border-red':
+                                                errorHandling('phoneNumber', 'required') &&
+                                                phonetocuhed
+                                        }"
+                                    >
+                                        <app-phone-input
+                                            [required]="true"
+                                            [value]="controls['phoneNumber'].value"
+                                            [countryISO2]="selectedCountry?.toLowerCase()"
+                                            (phoneValidation)="checkPhoneValidation($event)"
+                                            [staicCountryList]="countryList"
+                                            class="w-100"
+                                        >
+                                        </app-phone-input>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-3">
+                                    <mat-form-field appearance="outline" class="w-100 mt-4">
+                                        <mat-label> Email</mat-label>
+                                        <img
+                                            src="assets/images/email.svg"
+                                            alt="email"
+                                            matSuffix
+                                            class="input-icon"
+                                        />
+                                        <input
+                                            matInput
+                                            type="text"
+                                            formControlName="email"
+                                            placeholder="Email"
+                                        />
+                                        <mat-hint class="singup-hint"
+                                            >We don't accept personal emails, however if you have a
+                                            valid reason for using a personal email to access the
+                                            system, please
+                                            <a href="mailto:support@mercore.com" target="blank"
+                                                >Contact Us</a
+                                            >.
+                                        </mat-hint>
+                                        <mat-error *ngIf="errorHandling('email', 'required')">
+                                            Email is required
+                                        </mat-error>
+                                        <mat-error *ngIf="errorHandling('email', 'pattern')">
+                                            Email is invalid
+                                        </mat-error>
+                                        <mat-error *ngIf="errorHandling('email', 'maxlength')">
+                                            Email max length should be of 256 characters
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="
+                                                !errorHandling('email', 'required') &&
+                                                !errorHandling('email', 'pattern') &&
+                                                errorHandling('email', 'businessemail')
+                                            "
+                                        >
+                                            We don't accept personal emails, however if you have a
+                                            valid reason for using a personal email to access the
+                                            system, please
+                                            <a
+                                                href="mailto:support@mercore.com"
+                                                target="blank"
+                                                class="bold"
+                                                >Contact Us</a
+                                            >.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </mat-card-actions>
+                    <mat-card-title class="pt-5">Change your password</mat-card-title>
+                    <mat-card-actions>
+                        <ng-container class="d-flex justify-content-between">
+                            <div class="row">
+                                <div class="col-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Current Password</mat-label>
+                                        <input
+                                            matInput
+                                            type="password"
+                                            formControlName="oldPassword"
+                                            placeholder="Current Password"
+                                            [type]="passhide ? 'password' : 'text'"
+                                        />
+                                        <button
+                                            type="button"
+                                            mat-icon-button
+                                            matSuffix
+                                            (click)="passhide = !passhide"
+                                        >
+                                            <mat-icon>{{
+                                                passhide ? 'visibility_off' : 'visibility'
+                                            }}</mat-icon>
+                                        </button>
+                                        <!-- Error -->
+                                        <mat-error *ngIf="errorHandling('oldPassword', 'pattern')">
+                                            {{ validationMessage.password.invalid }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>New Password</mat-label>
+                                        <input
+                                            matInput
+                                            type="password"
+                                            formControlName="newPassword"
+                                            placeholder="New Password"
+                                            [type]="newPasshide ? 'password' : 'text'"
+                                        />
+                                        <button
+                                            type="button"
+                                            mat-icon-button
+                                            matSuffix
+                                            (click)="newPasshide = !newPasshide"
+                                        >
+                                            <mat-icon>{{
+                                                newPasshide ? 'visibility_off' : 'visibility'
+                                            }}</mat-icon>
+                                        </button>
+                                        <!-- Error -->
+                                        <mat-error *ngIf="errorHandling('newPassword', 'pattern')">
+                                            {{ validationMessage.password.invalid }}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </mat-card-actions>
+                    <button
+                        type="button"
+                        color="primary"
+                        mat-flat-button
+                        class="mt-4"
+                        (click)="saveChanges()"
+                        [disabled]="!settingsForm.valid"
+                    >
+                        Save changes
+                    </button>
+                </div>
+            </form>
+        </ng-container>
+    </mat-card-actions>
+</mat-card>

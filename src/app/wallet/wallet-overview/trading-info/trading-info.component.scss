@@ -1,0 +1,65 @@
+$component-font-size: 14px;
+.request-card {
+    &_trade-wrap {
+        border: 1px solid var(--color-primary-contrast);
+        background: rgba(242, 246, 250, 0.5);
+        border-radius: 9px;
+        // margin-right: 29px;
+        max-width: 100%;
+        .trade-info {
+            display: flex;
+            font-size: 13px;
+            align-items: center;
+        }
+        p {
+            color: var(--gray-background);
+            font-size: $component-font-size;
+            font-family: Inter-Regular;
+            margin-bottom: 4px;
+        }
+        &_dropdown {
+            height: 23vh;
+            overflow-y: scroll;
+            display: block;
+            overflow-x: hidden;
+        }
+    }
+}
+mat-icon {
+    img {
+        width: 100% !important;
+        height: 13px;
+    }
+}
+.check-icon {
+    padding-bottom: 7px;
+
+    img {
+        height: 10px;
+    }
+}
+.trading {
+    margin: 0px 5px;
+}
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-grey);
+    border-radius: 10px;
+}
+@media screen and (max-width: 576px) {
+    .request-card {
+        &_trade-wrap {
+            margin-top: 15px;
+        }
+    }
+}
+::ng-deep {
+    .request-card_trade-wrap_dropdown .mat-checkbox-label {
+        span {
+            white-space: normal;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+.wrapper {
+    .header-text {
+        color: var(--color-secondary-contrast);
+        height: 30px;
+        width: 30px;
+        border-radius: 30px;
+        text-align: center;
+        background-color: var(--color-primary-shade);
+        padding: 8px 5px;
+        font-size: 12px;
+    }
+
+    img {
+        height: 28px;
+        margin: 0;
+    }
+}
+.wrapper {
+    ::ng-deep {
+        .mat-tab-header {
+            border-bottom: unset !important;
+        }
+    }
+}

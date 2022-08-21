@@ -1,0 +1,42 @@
+table {
+    width: 100%;
+}
+.table > thead {
+    vertical-align: bottom;
+    background-color: var(--color-bg-light);
+    color: var(--grey-light);
+    // font-weight: 400;
+    font-family: Inter_light;
+    font-size: 14px;
+}
+table thead th {
+    // border-bottom: 2px solid var(--color-secondary-contrast);
+    border-top: 1px solid var(--color-secondary-contrast);
+}
+table td {
+    width: 0px;
+    padding: 0.75rem 103px 0.75rem 12px;
+    font-family: Inter-SemiBold;
+    font-size: 14px;
+    border: none;
+    overflow-x: unset;
+}
+table .table-body td {
+    color: var(--color-primary);
+    font-weight: 400;
+    font-family: Inter-Regular;
+}
+.table > :not(:first-child) {
+    border-top: unset;
+}
+.heading {
+    font-weight: 600;
+}
+.table-responsive {
+    overflow-x: unset;
+}
+@media screen and (max-width: 576px) {
+    .table-responsive {
+        overflow-x: scroll;
+    }
+}

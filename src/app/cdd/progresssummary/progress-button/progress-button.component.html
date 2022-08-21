@@ -1,0 +1,31 @@
+<span [ngSwitch]="progress">
+    <div *ngSwitchCase="'Completed'">
+        <button class="status-btn completed">
+            {{ progress }}
+        </button>
+    </div>
+    <div *ngSwitchCase="'In Progress'">
+        <button class="status-btn inprogress">
+            {{ progress }}
+        </button>
+    </div>
+    <div *ngSwitchCase="'Submitted'">
+        <button class="status-btn submited">
+            {{ progress }}
+        </button>
+    </div>
+    <div *ngSwitchCase="'Outstanding'">
+        <button class="status-btn outstanding">
+            {{ progress }}
+        </button>
+    </div>
+    <div *ngSwitchCase="'Uploaded'">
+        <button class="status-btn uploaded">
+            {{ progress }}
+        </button>
+    </div>
+    <div *ngSwitchCase="null"></div>
+    <div *ngSwitchDefault>
+        <button class="status-btn submited">NA</button>
+    </div>
+</span>

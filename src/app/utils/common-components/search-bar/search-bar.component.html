@@ -1,0 +1,19 @@
+<mat-form-field
+    appearance="outline"
+    [ngClass]="padding ? padding + ' ' + 'w-100 mb-0' : 'w-100 mb-0'"
+>
+    <mat-label>{{ placeholder }}</mat-label>
+    <span class="material-icons" matPrefix>
+        search
+    </span>
+    <input matInput #search placeholder="{{ placeholder }}" (keyup)="lazySearch.next($event)" />
+    <button
+        *ngIf="search.value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="removeSearchText(search)"
+    >
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>

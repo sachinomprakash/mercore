@@ -1,0 +1,38 @@
+<div class="s-layout__sidebar">
+    <a class="s-sidebar__trigger">
+        <mat-icon>menu</mat-icon>
+    </a>
+    <nav class="s-sidebar__nav">
+        <div class="sideMenu">
+            <div class="menu">
+                <mat-accordion *ngFor="let item of sideMenu">
+                    <mat-expansion-panel
+                        [disabled]="item.dis"
+                        class="acc-menu-list"
+                        [ngClass]="{ bluebg: item.active }"
+                        [routerLink]="item?.path"
+                    >
+                        <mat-expansion-panel-header class="">
+                            <mat-panel-title class="sidebar-title">
+                                <img
+                                    [src]="'assets/images/' + item.img"
+                                    class="sidebar-icons"
+                                    alt="user"
+                                />
+                                <span class="title">{{ item.menu | titlecase }}</span>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p
+                            class=""
+                            *ngFor="let subchild of item.submenu"
+                            (click)="navigate(subchild)"
+                        >
+                            <!-- <img [src]="'assets/images/'+subchild.img" class="sidebar-icons mr-2" alt="user"/> -->
+                            <span class=""> {{ subchild.childMenu | titlecase }}</span>
+                        </p>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,70 @@
+<ng-container> </ng-container>
+
+<div class="request-card_trade-wrap p-3">
+    <p>{{ title }} ({{ this.selectedItems.length }})</p>
+    <div class="position-relative">
+        <app-search-bar
+            [placeholder]="searchPlaceholder"
+            #search2
+            (onType)="onSearch($event)"
+        ></app-search-bar>
+        <!-- <span class="counts">{{ this.selectedItems.length }}</span> -->
+    </div>
+    <div class="request-card_trade-wrap_dropdown p-2">
+        <ng-container *ngIf="items; else ghostUI">
+            <ng-container *ngIf="!searchString; else searcheResult">
+                <div class="account-type" *ngFor="let item of items; let i = index">
+                    <div class="d-flex align-items-center">
+                        <mat-checkbox
+                            [value]="item.id.toString()"
+                            [checked]="isChecked(item.id.toString())"
+                            (change)="onCheckChange($event)"
+                        >
+                            <div class="d-flex align-items-center">
+                                <mat-icon
+                                    style="position: relative; width: 24px"
+                                    class="d-flex align-items-center"
+                                    *ngIf="item.icon"
+                                    ><img [src]="item.icon" alt=""
+                                /></mat-icon>
+                                <span [title]="item?.label" class="pl-2">{{ item?.label }}</span>
+                            </div>
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
+<ng-template #searcheResult>
+    <ng-container *ngIf="searchedItems && searchedItems.length; else emptyList">
+        <div class="account-type" *ngFor="let item of searchedItems; let i = index">
+            <mat-checkbox
+                [value]="item.id.toString()"
+                [checked]="isChecked(item.id.toString())"
+                (change)="onCheckChange($event)"
+            >
+                <div class="d-flex align-items-center">
+                    <mat-icon
+                        style="position: relative; width: 24px"
+                        class="d-flex align-items-center"
+                        *ngIf="item?.icon"
+                        ><img src="{{ item.icon }}" alt=""
+                    /></mat-icon>
+                    <span [title]="item?.label" class="pl-2">{{ item?.label }}</span>
+                </div>
+            </mat-checkbox>
+        </div>
+    </ng-container>
+
+    <ng-template #emptyList>
+        <div class="text-center">No results Found</div>
+    </ng-template>
+</ng-template>
+
+<ng-template #ghostUI>
+    <!-- <div class="card p-3">
+        hello
+        <app-shimmer-loader type="form"></app-shimmer-loader>
+    </div> -->
+</ng-template>

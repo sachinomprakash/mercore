@@ -1,0 +1,110 @@
+<div class="container">
+    <div class="login-container">
+        <mat-card class="login-card p-5">
+            <mat-card-header>
+                <div class="m-auto">
+                    <mat-card-title>
+                        <img
+                            mat-card-image
+                            src="assets/images/mercore-logo.svg"
+                            alt="mercore-logo"
+                        />
+                    </mat-card-title>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngIf="!loginSuccess">
+                    <div class="form-title my-2 mt-3">Check your emails</div>
+                    <p>
+                        We have sent a verification code to the email attached to your user profile.
+                    </p>
+                    <div class="text-center fw-700">Verification Code</div>
+                    <form
+                        [formGroup]="form"
+                        class="row control-group my-4 d-sm-flex justify-content-sm-center"
+                    >
+                        <div class="row">
+                            <div
+                                class="form-group col-3"
+                                *ngFor="let input of formInput; let i = index"
+                            >
+                                <input
+                                    [ngClass]="{
+                                        'form-control': true,
+                                        'error danger': !!errorMessage
+                                    }"
+                                    #formRow
+                                    type="text"
+                                    pattern="\d*"
+                                    [maxlength]="'1'"
+                                    max="1"
+                                    min="0"
+                                    formControlName="{{ input }}"
+                                    (keyup)="keyUpEvent($event, i)"
+                                    oninput="validity.valid||(value='');"
+                                />
+                            </div>
+                            <div class="text-center" *ngIf="errorCode">
+                                <span [ngSwitch]="errorCode.serverCode">
+                                    <mat-error
+                                        *ngSwitchCase="serverStatusCode.invalidOTP"
+                                        class="danger"
+                                    >
+                                        Wrong OTP. {{ errorCode.data.leftAttempts }} attempts
+                                        remaining
+                                    </mat-error>
+                                    <mat-error
+                                        *ngSwitchCase="serverStatusCode.enterOTPLimitExceed"
+                                        class="danger"
+                                    >
+                                        You have exceeded maximum
+                                        {{ errorCode?.data?.attempts }} number of attempts. Please
+                                        try after {{ enterOTPUnblock | minuteSeconds }}
+                                    </mat-error>
+                                    <mat-error
+                                        *ngSwitchCase="serverStatusCode.otpSendLimitExceed"
+                                        class="danger"
+                                    >
+                                        You have exceeded maximum number of send OTP limit. Please
+                                        try after {{ sendOTPUnblock | minuteSeconds }}
+                                    </mat-error>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <button
+                            type="button"
+                            (click)="onSubmit()"
+                            mat-flat-button
+                            color="primary"
+                            class="w-100 my-3"
+                        >
+                            Verify and sign in
+                        </button>
+                    </div>
+
+                    <div class="bold-link text-center mt-sm-5" *ngIf="!resendOTPIn; else resendErr">
+                        <a [routerLink]="'.'" (click)="sendOTP()"
+                            >Request another verification code</a
+                        >
+                    </div>
+                    <ng-template #resendErr>
+                        <div class="text-center">
+                            <mat-error class="danger">
+                                Resend OTP in: {{ resendOTPIn | minuteSeconds }}
+                            </mat-error>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<!-- <ng-template #loading>
+    <div class="text-center">
+        <img src="assets/images/loader.svg" alt="loader" />
+        <div class="fw-700 my-3">Signing In please wait.</div>
+        <p>You will be redirected to mercore platform</p>
+    </div>
+</ng-template> -->

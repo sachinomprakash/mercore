@@ -1,0 +1,84 @@
+<app-header-component></app-header-component>
+<div class="s-layout">
+    <!-- Sidebar -->
+    <div class="s-layout__sidebar">
+        <a class="s-sidebar__trigger">
+            <mat-icon>menu</mat-icon>
+        </a>
+        <nav class="s-sidebar__nav">
+            <div class="sideMenu">
+                <div class="stepbar p-sm-2 mt-2">
+                    <mat-stepper
+                        orientation="vertical"
+                        [linear]="isLinear"
+                        #stepper
+                        (selectionChange)="move($event.selectedIndex)"
+                    >
+                        <ng-template matStepperIcon="edit" let-index="index">
+                            {{ index + 1 }}
+                        </ng-template>
+                        <mat-step [stepControl]="firstFormGroup" [editable]="editable">
+                            <ng-template matStepLabel>Request Type</ng-template>
+                        </mat-step>
+                        <mat-step [stepControl]="secondFormGroup" [editable]="editable">
+                            <ng-template matStepLabel>Company Information</ng-template>
+                        </mat-step>
+                        <mat-step
+                            [stepControl]="thirdFormGroup"
+                            [editable]="editable"
+                            [completed]="completeStepper"
+                            [state]="stateStepper"
+                        >
+                            <ng-template matStepLabel>Trading Activities</ng-template>
+                        </mat-step>
+                    </mat-stepper>
+                </div>
+                <div class="s-sidebar__bottom mx-auto d-flex text-center" (click)="showToast()">
+                    <img src="assets/images/info-circle.svg" alt="info-circle" />
+                    <p class="text-white ml-2">Having troubles? <span>Get help</span></p>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Content -->
+    <main class="s-layout__content pt-5">
+        <p class="information">
+            <img src="assets/images/info-circle.png" alt="info-circle" /> Your information will save
+            as you fill out the application.
+        </p>
+        <ng-container *ngIf="cipData">
+            <div class="form-screen">
+                <span [ngSwitch]="selectedIndex">
+                    <div *ngSwitchCase="0">
+                        <app-request-type
+                            [productList]="cipData?.list_products"
+                            [cipStage]="cipData.stage"
+                            (onNext)="requestFormValid($event); goForward(stepper)"
+                        ></app-request-type>
+                    </div>
+                    <div *ngSwitchCase="1">
+                        <app-company-info
+                            [countries]="countries"
+                            [cipData]="cipData"
+                            (goBack)="goBack(stepper)"
+                            (infoFormValid)="infoFormValid($event); goForward(stepper)"
+                        ></app-company-info>
+                    </div>
+                    <div *ngSwitchCase="2" class="trade-wrap">
+                        <app-trading-info
+                            [countries]="countries"
+                            [cipData]="cipData"
+                            (onNext)="move(3); tradeFormValid($event)"
+                            (goBack)="goBack(stepper)"
+                        ></app-trading-info>
+                    </div>
+                    <div *ngSwitchCase="3">
+                        <app-cip-thankyou
+                            [applicationRef]="cipData.application_number"
+                        ></app-cip-thankyou>
+                    </div>
+                </span>
+            </div>
+        </ng-container>
+    </main>
+</div>

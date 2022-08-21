@@ -1,0 +1,63 @@
+<div class="table-responsive w-100 mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let header of tableHeader">
+                    <td>{{ header.name }}</td>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let record of records">
+                <tr class="table-body border border-bottom-1">
+                    <td *ngFor="let header of tableHeader">
+                        <ng-container [ngSwitch]="header.type">
+                            <ng-container *ngSwitchCase="'string'">
+                                {{ record[header.key] || 'NA' }}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'status'">
+                                <button class="button progress-btn">
+                                    {{ record[header.key] }}
+                                </button>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'date'">
+                                {{ record[header.key] | date: 'dd/MM/yyyy HH:mm' }}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'action'">
+                                <button
+                                    [ngClass]="
+                                        record.status == 'OPEN' || record.status == 'SUBMITTED'
+                                            ? header.class
+                                            : header.class
+                                    "
+                                    [disabled]="
+                                        record.status == 'OPEN' || record.status == 'SUBMITTED'
+                                            ? true
+                                            : false
+                                    "
+                                    (click)="onClickAction(record, header.event)"
+                                >
+                                    {{ header.value }}
+                                </button>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'action-progress'">
+                                <button
+                                    [ngClass]="
+                                        record.status == 'OPEN' ? header.class : header.class
+                                    "
+                                    [disabled]="record.status == 'OPEN' ? true : false"
+                                    (click)="onClickAction(record, header.event)"
+                                >
+                                    {{ header.value }}
+                                </button>
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+    <tr *ngIf="records.length === 0" class="d-flex justify-content-center">
+        <div class="p-4 text-center">No records found</div>
+    </tr>
+</div>

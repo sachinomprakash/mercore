@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="login-container">
+        <mat-card class="login-card p-sm-5">
+            <mat-card-header>
+                <div class="m-auto">
+                    <mat-card-title>
+                        <img
+                            mat-card-image
+                            src="assets/images/mercore-logo.svg"
+                            alt="mercore-logo"
+                        />
+                    </mat-card-title>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="text-center primary-text thankyou pt-5">
+                    <img src="assets/images/success-right.svg" alt="" />
+                    <div class="thankyou_thank-text mt-3">Thank You</div>
+                    <p class="py-4">Your email has been successfully verified.</p>
+                    <button
+                        [routerLink]="loginPath"
+                        mat-flat-button
+                        color="primary"
+                        class="w-100 my-4"
+                        type="button"
+                    >
+                        Continue
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

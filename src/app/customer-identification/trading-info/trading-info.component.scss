@@ -1,0 +1,74 @@
+$component-font-size: 14px;
+$letter-spacing: -0.2px;
+.optional {
+    padding-top: 5px;
+}
+.request-card {
+    &_trading-text {
+        font-size: $component-font-size;
+        h3 {
+            font-family: Inter_bold;
+            letter-spacing: $letter-spacing;
+            margin-bottom: 3px;
+            color: var(--color-primary);
+        }
+        span {
+            color: var(--color-grey);
+            font-family: Inter-Regular;
+        }
+    }
+    &_trade-wrap {
+        border: 1px solid var(--color-primary-contrast);
+        border-radius: 9px;
+        p {
+            color: var(--color-grey);
+            font-size: $component-font-size;
+            font-family: Inter-Regular;
+            margin-bottom: 4px;
+        }
+        &_dropdown {
+            height: 20vh;
+            overflow-y: scroll;
+            display: block;
+        }
+    }
+}
+
+::ng-deep {
+    .matChips .mat-form-field-appearance-fill .mat-form-field-flex {
+        border: 1px solid #dadada !important;
+        // border-radius: 4px solid grey;
+        padding: 0.75em 0.75em 0 0.75em;
+        border-radius: 7px;
+    }
+    // .mat-checkbox-layout{
+    //     flex-direction:row;
+    // }
+}
+
+.business-card {
+    position: relative;
+    .input-icon {
+        position: absolute;
+        top: 17px;
+        right: 33px;
+    }
+}
+.mat-card {
+    width: 0px;
+}
+@media screen and (max-width: 567px) {
+    .mat-card {
+        width: 90%;
+    }
+    .location-card {
+        margin-top: 20px;
+    }
+}
+
+.head-title {
+    font-family: Inter_bold;
+    letter-spacing: $letter-spacing;
+    margin-bottom: 3px;
+    color: var(--color-primary);
+}

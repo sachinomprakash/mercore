@@ -1,0 +1,69 @@
+$letter-spacing: -0.4px;
+
+.verify-email {
+    .verify-card {
+        height: auto;
+        box-shadow: 0px 5px 30px rgba(40, 50, 73, 0.04);
+        border-radius: 10px;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 50px 40px 22px;
+        .img-container {
+            img {
+                height: 30px;
+                margin-bottom: 20px;
+            }
+        }
+        .card-content {
+            h2 {
+                font-family: Inter-Regular;
+                font-size: 18px;
+                letter-spacing: $letter-spacing;
+                font-weight: 600;
+            }
+            .email-text {
+                p {
+                    font-family: Inter-SemiBold;
+                    font-size: 14px;
+                    letter-spacing: $letter-spacing;
+                    color: var(--gray-background);
+                    margin-bottom: 15px;
+                    // font-weight: 500;
+                    padding: 0px 130px 69px;
+                    span {
+                        color: var(--color-light-contrast);
+                    }
+                }
+            }
+            .bottom {
+                h5 {
+                    font-family: Inter-Regular;
+                    font-size: 14px;
+                    letter-spacing: $letter-spacing;
+
+                    color: var(--gray-background);
+                    // font-weight: 600;
+                    cursor: pointer;
+                    span {
+                        color: var(--color-primary);
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 576px) {
+    .verify-email {
+        .verify-card {
+            width: 90%;
+            .email-text {
+                p {
+                    padding: 0px 10px 69px !important;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,116 @@
+<mat-card class="request-card py-sm-2 px-sm-5 p-0">
+    <div class="d-flex justify-content-between header align-items-center py-3 px-0">
+        <p class="request-card_title mb-0">Add Sources of Wealth</p>
+        <img src="assets/images/close.svg" mat-dialog-close />
+    </div>
+    <form [formGroup]="sourcesOfWealthForm">
+        <div class="source row">
+            <div class="col-12 d-flex sources-of-wealith-input justify-content-between">
+                <div class="col-md-5">
+                    <div class="dropdown">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-select
+                                placeholder="Select Sources Of Wealth"
+                                disableOptionCentering
+                                formControlName="source_of_wealth_id"
+                                (valueChange)="getSowValue($event)"
+                            >
+                                <mat-option *ngFor="let sow of soucesOfWealth" [value]="sow.value">
+                                    {{ sow.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-7 d-flex align-items-center">
+                    <div class="data">
+                        <div class="d-flex align-items-center">
+                            <img src="assets/images/icon.svg" />
+                            <label>Helper text:</label>
+                        </div>
+                        <p class="mt-2">
+                            We can use this space to explain with a few characters what is a source
+                            of wealth or another text to guide the user in this “select source of
+                            wealth section”.
+                        </p>
+                    </div>
+                    <div class="source-checkbox">
+                        <mat-checkbox
+                            class="custom-frame ml-3"
+                            [disabled]="true"
+                            [checked]="checkColumn1"
+                        ></mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="sourcesOfWealthForm.value.source_of_wealth_id" class="p-0">
+                <div class="col-12 d-flex sources-of-wealith-input justify-content-between mt-3">
+                    <div class="col-md-5">
+                        <div class="">
+                            <div class="form-group">
+                                <textarea
+                                    class="form-control"
+                                    placeholder="Add free text here"
+                                    formControlName="free_text"
+                                    (change)="setEmpValue()"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 d-flex align-items-center">
+                        <div class="data mb-2">
+                            <div class="d-flex">
+                                <img src="assets/images/icon.svg" />
+                                <label>What should be included in the free text field:</label>
+                            </div>
+                            <ul class="list">
+                                <li>Employer’s name and address</li>
+                                <li>Employer’s telephone number</li>
+                                <li>Yearly income and/or bonus amount</li>
+                            </ul>
+                        </div>
+                        <div class="source-checkbox">
+                            <mat-checkbox
+                                class="custom-frame ml-3"
+                                [disabled]="true"
+                                [checked]="checkColumn2"
+                            ></mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex sources-of-wealith-input mt-3">
+                    <div class="col-md-5 col-xl-5 col-sm-12 col-xs-12 pt-3">
+                        <app-document-list
+                            [title]="
+                                'Please select at least one option from the document types listed below'
+                            "
+                            (activeDocument)="activeDoc($event)"
+                            [docList]="data.docs"
+                        ></app-document-list>
+                    </div>
+                    <div class="col-md-7 col-xl-7 col-sm-12 col-xs-12 pt-2">
+                        <app-upload-container
+                            [uploadComponent]="'soucesOfWealth'"
+                            [entityId]="data.entityId"
+                            [personInfo]="data.personInfo"
+                            [source_of_wealth_id]="source_of_wealth"
+                            (setSourcesOfWealthId)="getSourceOfWealthId($event)"
+                        ></app-upload-container>
+                    </div>
+                </div>
+            </div>
+            <button
+                type="button"
+                color="primary"
+                mat-flat-button
+                class="w-100 mt-4"
+                [disabled]="sourcesOfWealthForm.value.source_of_wealth_id === ''"
+                (click)="submit()"
+            >
+                Save source of wealth
+            </button>
+        </div>
+    </form>
+</mat-card>

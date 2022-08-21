@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center ">
+        <div class="col-md-8 ">
+            <div class="verify-email">
+                <mat-card class="verify-card">
+                    <mat-card-header>
+                        <div class="mx-auto p-4">
+                            <mat-card-title>
+                                <img
+                                    mat-card-image
+                                    src="assets/images/mercore-logo.svg"
+                                    alt="mercore-logo"
+                                />
+                            </mat-card-title>
+                        </div>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="top-img mt-5 mb-4">
+                            <img src="assets/images/confirm-email.svg" alt="confirm-email" />
+                        </div>
+                        <div class="card-content">
+                            <h2 class="mt-4 mb-4">Confirm your email</h2>
+                            <div class="email-text">
+                                <p class="mx-auto mb-5">
+                                    We’ve sent an email to <span>{{ email }}.</span> Check your
+                                    inbox to activate your user profile.
+                                </p>
+                            </div>
+                            <div class="bottom mt-5 text-center">
+                                <h5 (click)="sendEmail()">
+                                    Didn’t receive the email? <span> Send again</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

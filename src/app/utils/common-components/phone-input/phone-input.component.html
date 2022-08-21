@@ -1,0 +1,28 @@
+<form #f="ngForm" [formGroup]="phoneForm">
+    <ngx-intl-tel-input
+        [cssClass]="'custom'"
+        (focusout)="focusFunction($event)"
+        [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+        [searchCountryFlag]="true"
+        [separateDialCode]="true"
+        [phoneValidation]="true"
+        [enableAutoCountrySelect]="false"
+        [selectedCountryISO]="countryISO2"
+        name="phone"
+        ngDefaultControl
+        maxLength="15"
+        formControlName="phone"
+        [enablePlaceholder]="false"
+        [customPlaceholder]="'XXXX XXX XXX'"
+    >
+    </ngx-intl-tel-input>
+    <mat-error
+        class="custom-error"
+        *ngIf="f.form.controls['phone'].touched && f.form.controls['phone'].invalid"
+    >
+        {{ validErrorMsg || 'Please enter a valid phone number' }}
+    </mat-error>
+    <ng-container *ngIf="!required">
+        <span class="optional" *ngIf="!f.form.controls['phone'].invalid"></span>
+    </ng-container>
+</form>

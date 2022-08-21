@@ -1,0 +1,38 @@
+<div class="main-wrap">
+    <div class="row d-flex">
+        <!--left side-->
+        <div class="document-tabs">
+            <p>{{ title ? title : 'Select document type' }}</p>
+            <div class="document-nav-tabs">
+                <mat-list role="list" *ngFor="let file of fileList">
+                    <mat-list-item
+                        role="listitem"
+                        (click)="selectedDocument(file)"
+                        [ngClass]="{
+                            'list-document': true,
+                            active: file.active,
+                            completed: file.files.length && !file.active,
+                            default: !file.active && !file.files.length
+                        }"
+                    >
+                        <div class="d-flex align-item-center justify-content-center">
+                            <div class="d-flex align-item-center">
+                                <mat-icon class="mr-1 doc-icon">info_outline</mat-icon>
+                                <span class="word-break list-style">{{ file.name }}</span>
+                            </div>
+                            <div>
+                                <mat-checkbox
+                                    value="1"
+                                    class="radio-btn"
+                                    [checked]="!!file.files.length"
+                                    [disabled]="true"
+                                >
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </div>
+</div>

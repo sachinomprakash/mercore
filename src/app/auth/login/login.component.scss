@@ -1,0 +1,21 @@
+.login-card {
+    .text {
+        a {
+            // font-size: $component-font-size;
+            font-family: Inter-Medium;
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+    }
+}
+.mat-form-field-appearance-outline .mat-form-field-suffix {
+    top: -2px !important;
+}
+::ng-deep {
+    .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button {
+        width: 1.5em !important;
+    }
+}
+.mat-icon {
+    color: var(--gray-background);
+}

@@ -1,0 +1,46 @@
+.form-title {
+    font-size: 22px !important;
+}
+.control-group {
+    .form-control {
+        padding: 0 !important;
+        text-align: center;
+        font-size: 48px;
+        font-weight: 600;
+        height: 72px;
+        width: 56px;
+        background-color: var(--background-grey);
+        font-family: Inter-Medium;
+    }
+}
+.fw-700 {
+    font-weight: 600;
+    font-family: Inter-Medium;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.error {
+    background: var(--color-error) !important;
+}
+.danger {
+    color: var(--color-danger-shade);
+    font-weight: 500;
+}
+@media screen and (max-width: 576px) {
+    .login-container {
+        width: auto;
+    }
+}
+.disable-text {
+    color: var(--color-disable);
+}

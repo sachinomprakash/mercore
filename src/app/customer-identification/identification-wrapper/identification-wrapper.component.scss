@@ -1,0 +1,218 @@
+.s-layout {
+    display: flex;
+    width: 100%;
+}
+
+.s-layout__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    overflow: auto;
+}
+
+.s-sidebar__trigger {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.s-sidebar__trigger > mat-icon {
+    display: inline-block;
+    padding: 16px 17px;
+    font-size: 2rem;
+    color: var(--color-primary);
+}
+
+.sideMenu {
+    overflow-y: scroll;
+    height: 100%;
+    padding-top: 25px;
+}
+
+.s-layout__content .form-screen {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.s-sidebar__nav {
+    position: fixed;
+    left: -21em;
+    overflow: hidden;
+    transition: all 0.3s ease-in;
+    width: 21em;
+    height: 100%;
+    background-color: var(--color-primary);
+    border-bottom: 1px solid var(--primary-background);
+    background-position: 100% 100%;
+    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 9999;
+    margin-top: 60px;
+}
+
+.s-sidebar__nav:hover,
+.s-sidebar__nav:focus,
+.s-sidebar__trigger:focus + .s-sidebar__nav,
+.s-sidebar__trigger:hover + .s-sidebar__nav {
+    left: 0;
+}
+
+.s-sidebar__nav ul {
+    position: absolute;
+    top: 4em;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+.s-sidebar__nav ul li {
+    width: 100%;
+}
+
+.s-sidebar__nav-link {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 4em;
+}
+
+.s-sidebar__nav-link em {
+    position: absolute;
+    top: 50%;
+    left: 4em;
+    transform: translateY(-50%);
+}
+
+.form-screen {
+    width: 780px;
+    padding: 2rem 0rem;
+}
+
+.s-sidebar__bottom {
+    padding: 10px 24px;
+    position: absolute;
+    bottom: 5rem;
+    p {
+        margin: 0px;
+        padding: 0px;
+        font-size: 12px;
+        span {
+            text-decoration: underline;
+        }
+    }
+}
+
+.menu {
+    ::ng-deep {
+        .mat-expansion-panel:not([class*='mat-elevation-z']) {
+            box-shadow: none;
+            background: transparent;
+            padding: 6px 0px;
+        }
+        .mat-expansion-panel:not(.mat-expanded)
+            .mat-expansion-panel-header:hover:not([aria-disabled='true']) {
+            background: rgb(53, 64, 89);
+            opacity: 1;
+            color: var(--white-background) !important;
+            border-radius: 0;
+        }
+        .mat-expansion-panel-header-title span {
+            font-size: 14px;
+            color: #bac2c7;
+            padding-left: 15px;
+            font-family: Inter-Regular;
+        }
+        .mat-expansion-panel-header-description,
+        .mat-expansion-indicator::after {
+            color: #bac2c7;
+        }
+        .mat-expansion-panel-content {
+            color: #bac2c7;
+            font-family: Inter-Regular;
+        }
+        .mat-expansion-panel-body {
+            padding: 7px 0px 0px 35px;
+        }
+        .mat-expansion-panel-body p {
+            padding: 10px 0px;
+            margin-left: 23px;
+            cursor: pointer;
+        }
+        .sidebar-title {
+            width: 170px;
+        }
+        .acc-menu-list {
+            padding-right: 15px;
+        }
+    }
+}
+
+.bluebg:hover {
+    background: rgb(53, 64, 89) !important;
+    opacity: 1;
+    color: var(--white-background);
+    border-radius: 0;
+}
+
+/* Mobile First */
+
+@media (min-width: 42em) {
+    .s-layout__content {
+        margin-left: 4em;
+    }
+    /* Sidebar */
+    .s-sidebar__trigger {
+        width: 4em;
+    }
+    .s-sidebar__nav {
+        width: 4em;
+        left: 0;
+    }
+    .s-sidebar__nav:hover,
+    .s-sidebar__nav:focus,
+    .s-sidebar__trigger:hover + .s-sidebar__nav,
+    .s-sidebar__trigger:focus + .s-sidebar__nav {
+        width: auto;
+    }
+}
+
+@media (min-width: 68em) {
+    .s-layout__content {
+        margin-left: 21em;
+    }
+    /* Sidebar */
+    .s-sidebar__trigger {
+        display: none;
+    }
+    .s-sidebar__nav {
+        width: auto;
+    }
+    .s-sidebar__nav ul {
+        top: 1.3em;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .sideMenu {
+        position: relative;
+    }
+    .s-sidebar__nav {
+        z-index: 9999;
+    }
+    .s-sidebar__bottom {
+        bottom: 0px !important;
+        padding: 36px 24px;
+    }
+    .s-sidebar__trigger {
+        z-index: 6;
+    }
+    .trade-wrap {
+        width: 100vw;
+    }
+}

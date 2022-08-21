@@ -1,0 +1,139 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+/** Ionic CSS Variables **/
+:root {
+    --default-font: 'Inter_regular' !important;
+    --header-font: 'Inter_bold' !important;
+    --light-font: 'Inter_light' !important;
+
+    /** primary **/
+    --color-primary: #283249;
+    --color-primary-rgb: 56, 128, 255;
+    --color-primary-contrast: #e3e5eb;
+    --color-primary-contrast-rgb: 255, 255, 255;
+    --color-primary-shade: #3171e0;
+    --color-primary-tint: #95a0b9;
+
+    /** secondary **/
+    --color-secondary: #f7f9fc;
+    --color-secondary-rgb: 12, 209, 232;
+    --color-secondary-contrast: #ffffff;
+    --color-secondary-contrast-rgb: 255, 255, 255;
+    --color-secondary-shade: #d90d52;
+    --color-secondary-tint: #e1e7ee;
+    --color-grey-dark: #d7d7de;
+
+    /** extra colors **/
+    --secondary-list-color: #00c2bc;
+    --secondary-video-color: #dbf5e4;
+    --secondary-videohover-color: #8fc09f;
+    --secondary-danger-color: #ff1111;
+
+    /** tertiary **/
+    --color-tertiary: #797979;
+    --color-tertiary-rgb: 112, 68, 255;
+    --color-tertiary-contrast: #ffffff;
+    --color-tertiary-contrast-rgb: 255, 255, 255;
+    --color-tertiary-shade: #382d56;
+    --color-tertiary-tint: #7a8190;
+
+    /** success **/
+    --color-success: #8cc641;
+    --color-success-rgb: 16, 220, 96;
+    --color-success-contrast: #ffffff;
+    --color-success-contrast-rgb: 255, 255, 255;
+    --color-success-shade: #0ec254;
+    --color-success-tint: #4caf50;
+
+    /** warning **/
+    --color-warning: #ff993c;
+    --color-warning-rgb: 255, 206, 0;
+    --color-warning-contrast: #ffffff;
+    --color-warning-contrast-rgb: 255, 255, 255;
+    --color-warning-shade: #b79100;
+    --color-warning-tint: #ffffd4;
+
+    /** danger **/
+    --color-danger: #a10101;
+    --color-danger-rgb: 245, 61, 61;
+    --color-danger-contrast: #ffffff;
+    --color-danger-contrast-rgb: 255, 255, 255;
+    --color-danger-shade: #d33939;
+    --color-danger-tint: #ffe1e1;
+    --color-danger-red: #ff0000;
+
+    /** dark **/
+    --color-dark: #646464;
+    --color-dark-rgb: 34, 34, 34;
+    --color-dark-contrast: #ffffff;
+    --color-dark-contrast-rgb: 255, 255, 255;
+    --color-dark-shade: #1e2023;
+    --color-dark-tint: #383a3e;
+
+    /** medium **/
+    --color-medium: #828588;
+    --color-medium-rgb: 152, 154, 162;
+    --color-medium-contrast: #707070;
+    --color-medium-contrast-rgb: 255, 255, 255;
+    --color-medium-shade: #4b5660;
+    --color-medium-tint: #cacaca;
+
+    /** light **/
+    --color-light: #f1f1f1;
+    --color-light-rgb: 244, 244, 244;
+    --color-light-contrast: #000000;
+    --color-light-contrast-rgb: 0, 0, 0;
+    --color-light-shade: #d7d8da;
+    --color-light-tint: #f5f6f9;
+
+    /** background **/
+    --gray-background: #757e86;
+    --white-background: #ffffff;
+    --list-background: #fcfcfc;
+    --active-item-background: #e5e5e5;
+    --radio-button-background: #f3f6fa;
+    --primary-background: #f7f9fc;
+
+    /** buttons **/
+    --btn-primary: #6a6a6a;
+    --btn-secondary: #d5d5d5;
+    --btn-calendar-primary: #33588a;
+
+    /** heading **/
+    --page-header-size: 20px;
+    --page-header-color: #6a6a6a;
+    --page-subheader-size: 15px;
+    --page-subheader-color: #6a6a6a;
+    --page-label: 13px;
+
+    /** table **/
+    --table-even-color: #e5e5e52e;
+    --table-odd-color: #fff;
+    --table-alert-background: #787878;
+    --private-background-color: #c1f8f0;
+
+    /** vw and vh **/
+    --view-height-100: 100vh;
+    --view-width-100: 100vw;
+
+    /** cursor pointer **/
+    --cursor: pointer;
+
+    /** input border **/
+    --border-radius: 3px;
+    --border: 1px solid #cacaca;
+    --light-border: 1px solid #eaeaf2;
+
+    /** nav-bar styles **/
+    --color-nav-primary: #d90d52;
+    --color-nav-secondary: #d90d52;
+    --card-border: #dadce0;
+    --hover: #fff5f8;
+    --disabled: #b6b6b6;
+    --icon-background: #d90d521a;
+    --divider: #eaecf0;
+    --snackbar-error: #e8bcc6;
+    --snackBar-action: #181819;
+    --snackbar-success: #f3fff4;
+}

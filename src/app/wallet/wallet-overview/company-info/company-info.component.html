@@ -1,0 +1,327 @@
+<form>
+    <div class="d-flex justify-content-sm-around row mt-4">
+        <div class="col-md-4">
+            <div class="country">
+                <div
+                    [ngClass]="{
+                        'border-red': selectedCountry?.id == undefined && countrytocuhed
+                    }"
+                >
+                    <!-- <app-country-select
+            label="Country of incorporation / registration"
+            [countries]="caseService.countries"
+            [disabled]="true"
+            [selectedCountry]="selectedCountry"
+            (onCountrySelect)="countrySelected($event)"
+            (focusout)="focusFunction($event)"
+            [required]="true"
+          >
+          </app-country-select> -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Country of incorporation / registration</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            placeholder="Country of incorporation / registration"
+                            [value]="'India'"
+                            disabled
+                        />
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Company number</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Company number"
+                    [value]="companyInfo?.company_registration_number"
+                    disabled
+                />
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>LEI number</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Company number"
+                    [value]="companyInfo?.lei_number"
+                    disabled
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="d-flex justify-content-around row mt-4">
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="select-form">
+                <mat-label>Legal Entity Type</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Company number"
+                    [value]="companyInfo?.legal_entity_type_id?.name"
+                    disabled
+                />
+                <!-- <mat-select formControlName="legal_entity_type_id">
+                    <mat-option *ngFor="let entity of caseService.leagalEntity" [value]="entity.id">
+                        {{ entity.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="errorHandling('legal_entity_type_id', 'required')">
+                    Legal entity type is required
+                </mat-error> -->
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="select-form">
+                <mat-label>Legal Form</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Company number"
+                    [value]="companyInfo?.legal_entity_form_data?.name"
+                    disabled
+                />
+                <!-- <mat-select formControlName="legal_entity_form_id">
+                    <mat-option
+                        *ngFor="let entity of legalEnitityListValue"
+                        [value]="entity.legal_entity_form_id"
+                    >
+                        {{ entity.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="errorHandling('legal_entity_form_id', 'required')">
+                    Legal form type is required
+                </mat-error> -->
+            </mat-form-field>
+        </div>
+        <div class="col-md-4">
+            <mat-form-field appearance="outline" class="select-form">
+                <mat-label>Industry Sector</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    [value]="companyInfo?.industry_sector_id?.name"
+                    disabled
+                />
+                <!-- <mat-select formControlName="industry_sector_id">
+                    <mat-option
+                        *ngFor="let industry of caseService.industorySectors"
+                        [value]="industry.id"
+                    >
+                        {{ industry.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="errorHandling('industry_sector_id', 'required')">
+                    Industry sector is required
+                </mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <mat-form-field appearance="outline">
+                <mat-label>Registered Company Name</mat-label>
+                <input
+                    matInput
+                    placeholder="Registered Company Name"
+                    [value]="companyInfo.company_name"
+                    disabled
+                />
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Previous company name(s)</mat-label>
+                <mat-chip-list #chipList aria-label="Fruit selection" [disabled]="!editMode">
+                    <mat-chip
+                        *ngFor="let company of companyInfo?.previous_company_names"
+                        (removed)="removePrevCompanyName(company)"
+                        class="chip"
+                    >
+                        <span class="truncate">{{ company }}</span>
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                    <input
+                        placeholder="Previous company name(s)"
+                        [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="true"
+                        (matChipInputTokenEnd)="addPrevCompanyName($event)"
+                    />
+                </mat-chip-list>
+            </mat-form-field>
+            <mat-error class="chip-error" *ngIf="chipLength <= 1"
+                >Previous company name should be of at least 2 characters</mat-error
+            >
+            <mat-error class="chip-error" *ngIf="chipLength >= 256"
+                >Previous company name must be less than 257 characters</mat-error
+            >
+            <span class="optional">Where applicable</span>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <label class="optional mb-2 ml-2">Date of Incorporation</label>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="d-flex request-card_calender">
+                        <div class="request-card_calender_date">
+                            <mat-form-field class="select-field" appearance="outline">
+                                <mat-label>dd</mat-label>
+                                <mat-select
+                                    [value]="companyInfo?.date_of_incorporation_object?.date"
+                                    disabled
+                                >
+                                    <mat-option *ngFor="let day of dayOptions" [value]="day.value">
+                                        {{ day.viewValue }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="request-card_calender_month">
+                            <mat-form-field class="select-field" appearance="outline">
+                                <mat-label>mm</mat-label>
+                                <mat-select
+                                    [value]="companyInfo?.date_of_incorporation_object?.month"
+                                    disabled
+                                >
+                                    <mat-option
+                                        *ngFor="let month of monthOptions"
+                                        [value]="month.value"
+                                    >
+                                        {{ month.viewValue }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="request-card_calender_year">
+                            <mat-form-field class="select-field-year" appearance="outline">
+                                <mat-label>yyyy</mat-label>
+                                <mat-select
+                                    [value]="companyInfo?.date_of_incorporation_object?.year"
+                                    disabled
+                                >
+                                    <mat-option
+                                        *ngFor="let year of yearOptions"
+                                        [value]="year.value"
+                                    >
+                                        {{ year.viewValue }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="errorHandling('year', 'required')">
+                                    year is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Company registered address</mat-label>
+                        <input
+                            matInput
+                            placeholder="Company registered address"
+                            [value]="companyInfo?.company_address?.address"
+                            disabled
+                        />
+                        <!-- <mat-error *ngIf="errorHandling('address', 'required')">
+                            Company address is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('address', 'minlength')">
+                            Company address should be of at least 2 characters
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Postcode/zip</mat-label>
+                        <input
+                            matInput
+                            placeholder="Postcode/zip"
+                            [value]="companyInfo?.company_address?.zipcode"
+                            disabled
+                        />
+                        <!-- <mat-error *ngIf="errorHandling('zipcode', 'required')">
+                            Postcode/zip is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('zipcode', 'pattern')">
+                            Postcode/zip is invalid
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Town/City</mat-label>
+                        <input
+                            matInput
+                            placeholder="Town/City"
+                            [value]="companyInfo?.company_address?.city"
+                            disabled
+                        />
+                        <mat-error *ngIf="errorHandling('city', 'required')">
+                            Town/City is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('city', 'minlength')">
+                            Town/City should be of at least 2 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="d-flex server-dropdown align-item-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Company website</mat-label>
+                    <input
+                        matInput
+                        placeholder="Company website"
+                        [value]="companyInfo?.company_Website"
+                        disabled
+                    />
+                    <!-- <mat-error *ngIf="errorHandling('company_Website', 'required')">
+                        Company website is required
+                    </mat-error> -->
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-6 mt-2 search-country w-100">
+            <div class="d-flex server-dropdown align-item-center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Phone Number</mat-label>
+                    <input
+                        matInput
+                        placeholder="Company website"
+                        [value]="companyInfo?.company_phone_number"
+                        disabled
+                    />
+                </mat-form-field>
+            </div>
+            <!-- <fieldset [disabled]="!editMode">
+                <div
+                    [ngClass]="{
+                        'border-red':
+                            errorHandling('company_phone_number', 'required') && phonetocuhed
+                    }"
+                >
+                    <app-phone-input
+                        [phoneValueReset]="phoneValueReset"
+                        [value]="constrols['company_phone_number']?.value"
+                        [countryISO2]="selectedCountry?.alpha2Code?.toLowerCase()"
+                        (phoneValidation)="checkPhoneValidation($event)"
+                        [required]="phoneValueRequired"
+                    >
+                    </app-phone-input>
+                </div>
+            </fieldset> -->
+        </div>
+    </div>
+</form>

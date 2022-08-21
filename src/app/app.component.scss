@@ -1,0 +1,8 @@
+.page-loader {
+    ::ng-deep {
+        .loading {
+            position: fixed !important;
+            width: 22% !important;
+        }
+    }
+}

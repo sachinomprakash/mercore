@@ -1,0 +1,137 @@
+<div class="fixed-header-table risks-identified-region" [ngSwitch]="type">
+    <div *ngSwitchDefault>
+        <table *ngFor="let documents of docs | filter: searchString:'name'">
+            <tr>
+                <td class="column-1">
+                    <h2>
+                        {{ documents.length }}
+                        {{ documents.name }}
+                    </h2>
+                </td>
+                <td class="column-2 p-0">
+                    <app-progress-button
+                        [progress]="documents.progressStatus"
+                    ></app-progress-button>
+                </td>
+                <td class="column-3">&nbsp;</td>
+                <td class="column-4 p-0 m-0">
+                    <h2>{{ documents.updated_at | date: 'dd/MM/yyyy' }}</h2>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div *ngSwitchCase="'additionalRequests'">
+        <div *ngFor="let documents of docs">
+            <div class="title">{{ documents.name }}</div>
+            <table>
+                <tr *ngFor="let questions of documents.questions | filter: searchString:'question'">
+                    <td class="column-1">
+                        <h2>
+                            {{ questions.question }}
+                        </h2>
+                    </td>
+                    <td class="column-2 p-0">
+                        <app-progress-button
+                            [progress]="questions.progressStatus"
+                        ></app-progress-button>
+                    </td>
+                    <td class="column-3">&nbsp;</td>
+                    <td class="column-4 p-0 m-0">
+                        <h2>{{ questions.updated_at | date: 'dd/MM/yyyy' }}</h2>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div *ngSwitchCase="'person'">
+        <mat-accordion class="accordion-styles" multi *ngFor="let documents of docs">
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <table>
+                            <tr>
+                                <td class="individual-col">
+                                    <div class="d-flex">
+                                        <h3>
+                                            {{ documents.name }}
+                                        </h3>
+                                    </div>
+                                </td>
+                                <td class="individual-col-2 ">
+                                    <app-progress-button
+                                        [progress]="documents.progressStatus"
+                                    ></app-progress-button>
+                                </td>
+                                <td class="column-3">
+                                    &nbsp;
+                                </td>
+                                <td class="column-4">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="title">Documents</div>
+                <table *ngIf="documents.personDocs.length > 0; else noDataFound">
+                    <tr
+                        *ngFor="
+                            let personDoc of documents.personDocs | filter: searchString:'document'
+                        "
+                    >
+                        <td class="column-1">
+                            <h2>
+                                {{ personDoc.document }}
+                            </h2>
+                        </td>
+                        <td class="column-2 p-0">
+                            <app-progress-button
+                                [progress]="personDoc.progressStatus"
+                            ></app-progress-button>
+                        </td>
+                        <td class="column-3">&nbsp;</td>
+                        <td class="column-4 p-0 m-0">
+                            <h2>{{ personDoc.updated_at | date: 'dd/MM/yyyy' }}</h2>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="title" *ngIf="documents.uboKYCDocs?.document_types.length > 0">
+                    Sources of wealth
+                </div>
+                <table *ngIf="documents.uboKYCDocs?.document_types.length > 0">
+                    <tr
+                        *ngFor="
+                            let personDoc of documents.uboKYCDocs?.document_types
+                                | filter: searchString:'document'
+                        "
+                    >
+                        <td class="column-1">
+                            <h2>
+                                {{ personDoc.document }}
+                            </h2>
+                        </td>
+                        <td class="column-2 p-0">
+                            <app-progress-button
+                                [progress]="personDoc.progressStatus"
+                            ></app-progress-button>
+                        </td>
+                        <td class="column-3">&nbsp;</td>
+                        <td class="column-4 p-0 m-0">
+                            <h2>{{ personDoc.updated_at | date: 'dd/MM/yyyy' }}</h2>
+                        </td>
+                    </tr>
+                </table>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <ng-template #noDataFound>
+            <tr>
+                <td class="column-1">
+                    <h2>
+                        No data found
+                    </h2>
+                </td>
+            </tr>
+        </ng-template>
+    </div>
+</div>

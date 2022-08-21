@@ -1,0 +1,159 @@
+$component-font-size: 14px;
+$letter-spacing: -0.2px;
+.request-card {
+    &_calender {
+        &_date {
+            width: 27%;
+        }
+        &_month {
+            width: 27%;
+            margin-left: 7px;
+        }
+        &_year {
+            width: 42%;
+            margin-left: 7px;
+        }
+    }
+    .server-dropdown .btn {
+        width: 32% !important;
+        padding: 0px 0px !important;
+        margin-right: 10px;
+    }
+}
+
+.truncate {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.chip {
+    max-width: 50%;
+}
+
+.search-country {
+    // margin-top: 16px;
+    ::ng-deep {
+        .iti__selected-flag.dropdown-toggle {
+            height: 52px;
+        }
+        .optional {
+            display: inline-block;
+            // padding-top: 11px;
+        }
+        input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+        }
+    }
+}
+
+.country {
+    ::ng-deep {
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: -2px !important;
+        }
+        .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon {
+            height: 14px !important;
+        }
+    }
+}
+
+.chip-error {
+    font-size: 10.5px;
+    margin: -3px 0 0 13px !important;
+}
+
+::ng-deep {
+    .iti.separate-dial-code input,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-2 input,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-3 input,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-4 input {
+        padding-left: 10px !important;
+        width: calc(100% - 103px);
+        margin-left: 105px;
+        font-size: 14px;
+        font-family: Inter-Medium;
+        // color:var(--color-primary-contrast);
+        border: 1px solid var(--color-primary-contrast);
+    }
+    .iti.separate-dial-code .iti__selected-flag,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-2 .iti__selected-flag,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-3 .iti__selected-flag,
+    .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-4 .iti__selected-flag {
+        border: 1px solid var(--color-primary-contrast);
+        border-radius: 5px;
+    }
+    #country-search-box {
+        margin-left: 0px !important;
+    }
+    .iti__country-list {
+        overflow-x: hidden;
+    }
+    mat-form-field {
+        width: 100% !important;
+        //   margin: 10px 0px;
+    }
+    .mat-chip.mat-standard-chip {
+        background: #ecf0f4 !important;
+        border: 1px solid #b8bcc5 !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    ::ng-deep {
+        .iti.separate-dial-code input,
+        .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-2 input,
+        .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-3 input,
+        .iti.separate-dial-code.iti--allow-dropdown.iti-sdc-4 input {
+            width: 60%;
+        }
+    }
+}
+
+.dropdown-option {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    width: 88%;
+    height: auto;
+    background: #fff;
+    opacity: 1;
+    z-index: 1;
+    // border-radius: 10px;
+    margin: 10px 0px;
+    &.loader {
+        height: 100%;
+    }
+    .mat-option {
+        height: 50px;
+        line-height: 20px;
+    }
+}
+.loader-pos {
+    display: flex;
+    position: absolute;
+    top: 2.5rem;
+}
+.error-m {
+    font-size: 12px !important;
+}
+
+.industry-field ::ng-deep {
+    .mat-select {
+        width: 93% !important;
+    }
+    button {
+        .mat-icon {
+            margin-right: 36px !important;
+        }
+    }
+}
+.indusry-sector-tooltip {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+}
+.tooltip-icon {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.2rem;
+}

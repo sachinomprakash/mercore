@@ -1,0 +1,33 @@
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Request Type</td>
+                <td>Product / Services</td>
+                <td>Status</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of list_products" class="table-body border border-bottom-1">
+                <ng-container *ngIf="product?.subCategories?.length">
+                    <td class="font-weight-bold">{{ product.name }}</td>
+                    <td>
+                        <tr *ngFor="let item of product.subCategories">
+                            {{
+                                item.name
+                            }}
+                        </tr>
+                    </td>
+
+                    <td>
+                        <tr *ngFor="let item of product.subCategories">
+                            {{
+                                item.is_active | status
+                            }}
+                        </tr>
+                    </td>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+</div>

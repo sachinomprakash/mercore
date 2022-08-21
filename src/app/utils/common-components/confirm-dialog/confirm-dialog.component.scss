@@ -1,0 +1,11 @@
+::ng-deep {
+    mat-dialog-container {
+        position: relative;
+    }
+}
+.cross-icon {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    cursor: pointer;
+}

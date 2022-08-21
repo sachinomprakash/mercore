@@ -1,0 +1,73 @@
+.upload-document {
+    p {
+        color: #7a8190;
+        font-family: Inter-Regular;
+        font-size: 12px;
+    }
+    .muted-text {
+        color: #7a8190;
+        font-family: Inter-Regular;
+    }
+    .info-icon {
+        color: var(--gray-background);
+        opacity: 0.4;
+        font-size: 20px;
+    }
+    .badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 100%;
+        padding: 7px;
+        background: #f2f4f7;
+        color: black;
+        font-size: 12px;
+    }
+    .document-file-upload {
+        border: 2px dashed #d4d7df;
+        border-radius: 8px;
+        background: #f9f9fa;
+        cursor: pointer;
+    }
+    .document-file {
+        background: #f9f9fa;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    // .file-size {
+    //     margin-top: -7px;
+    // }
+    .doc-icon {
+        margin-top: -15px;
+    }
+    .uploaded-files {
+        height: 210px;
+        overflow: auto;
+        background: #f9f9fa;
+        border-radius: 8px;
+        border: none;
+    }
+    .file-list {
+        .card-contain {
+            border: 1px solid #e1e4ea;
+            box-shadow: none;
+            border-radius: 8px;
+            padding: 10px !important;
+        }
+    }
+}
+input[type='file'] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.size-error {
+    color: var(--color-danger-red);
+}
+@media screen and (max-width: 576px) {
+    .upload-document .para {
+        font-size: 9px;
+    }
+}

@@ -1,0 +1,19 @@
+.error-select {
+    & ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+        color: #f44336 !important;
+    }
+}
+
+.custom-error {
+    font-size: 75%;
+    position: relative;
+    bottom: 15px;
+}
+
+::ng-deep {
+    app-country-select {
+        .mat-form-field-hide-placeholder .mat-form-field-suffix {
+            display: none;
+        }
+    }
+}

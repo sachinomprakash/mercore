@@ -1,0 +1,168 @@
+<div class="container login-container">
+    <mat-card class="p-sm-5 login-card">
+        <mat-card-header>
+            <mat-card-title class="mobile-logo ">
+                <img mat-card-image src="assets/images/mercore-logo.svg" alt="mercore-logo" />
+            </mat-card-title>
+        </mat-card-header>
+        <div class="form-title my-3">
+            Create a Mercore user profile
+        </div>
+        <mat-card-content>
+            <form [formGroup]="registerForm">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12 ">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>First name</mat-label>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="firstName"
+                                placeholder="First name"
+                            />
+                            <mat-error *ngIf="errorHandling('firstName', 'required')">
+                                First name is required
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('firstName', 'maxlength')">
+                                First name max length should be of 32 characters
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('firstName', 'minlength')">
+                                First name min length should be of 3 characters
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Last name</mat-label>
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="lastName"
+                                placeholder="Last name"
+                            />
+                            <mat-error *ngIf="errorHandling('lastName', 'required')">
+                                Last name is required
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('lastName', 'maxlength')">
+                                Last name max length should be of 32 characters
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('lastName', 'minlength')">
+                                Last name min length should be of 3 characters
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <mat-form-field appearance="outline" class="w-100 mt-sm-4">
+                            <mat-label> Business email</mat-label>
+                            <img
+                                src="assets/images/email.svg"
+                                alt="email"
+                                matSuffix
+                                class="input-icon"
+                            />
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="email"
+                                placeholder="Email"
+                            />
+                            <mat-hint class="singup-hint"
+                                >We don't accept personal emails, however if you have a valid reason
+                                for using a personal email to access the system, please
+                                <a (click)="openLink('mailto:support@mercore.com')">Contact Us</a>.
+                            </mat-hint>
+                            <mat-error *ngIf="errorHandling('email', 'required')">
+                                Email is required
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('email', 'pattern')">
+                                Email is invalid
+                            </mat-error>
+                            <mat-error *ngIf="errorHandling('email', 'maxlength')">
+                                Email max length should be of 256 characters
+                            </mat-error>
+                            <mat-error
+                                *ngIf="
+                                    !errorHandling('email', 'required') &&
+                                    !errorHandling('email', 'pattern') &&
+                                    errorHandling('email', 'businessemail')
+                                "
+                            >
+                                We don't accept personal emails, however if you have a valid reason
+                                for using a personal email to access the system, please
+                                <a (click)="openLink('mailto:support@mercore.com')" class="bold"
+                                    >Contact Us</a
+                                >.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6 country mt-3">
+                        <div
+                            class="country-flag "
+                            [ngClass]="{
+                                'border-red': selectedCountry?.id == undefined && countrytocuhed
+                            }"
+                        >
+                            <app-country-select
+                                (focusout)="focusFunction($event)"
+                                [label]="'Select your country of residence'"
+                                [countries]="countries"
+                                (onCountrySelect)="countrySelected($event)"
+                                [placeholder]="'Select your country of residence'"
+                                [errorMsg]="'Country of residence is required'"
+                            ></app-country-select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mt-3">
+                        <div
+                            [ngClass]="{
+                                'border-red':
+                                    errorHandling('phoneNumber', 'required') && phonetocuhed
+                            }"
+                        >
+                            <app-phone-input
+                                [required]="true"
+                                [countryISO2]="selectedCountry?.alpha2Code?.toLowerCase()"
+                                (phoneValidation)="checkPhoneValidation($event)"
+                                class="w-100"
+                            >
+                            </app-phone-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-2 pt-2 pl-0 check">
+                    <mat-checkbox color="primary" formControlName="termsAgreed" ngDefaultControl
+                        >I have read and agree to the Mercore
+                        <a href="./assets/terms.pdf" target="blank">Terms & Conditions</a>.*
+                    </mat-checkbox>
+                </div>
+                <div class="col-12 pb-4 bottom-text pl-0 ">
+                    <mat-checkbox color="primary" formControlName="privacyPolicy" ngDefaultControl>
+                        I agree to receive other communications from the Mercore platform. For more
+                        information please review our
+                        <a href="./assets/privacy-policy.pdf" target="blank">Privacy Policy</a>
+                        .
+                    </mat-checkbox>
+                </div>
+                <div>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        class="w-100"
+                        (click)="onSubmit()"
+                        [disabled]="registerForm.invalid"
+                    >
+                        Create my user profile
+                    </button>
+                </div>
+            </form>
+            <div class="bottom-content text-center">
+                <p>
+                    Already have a user profile?<span [routerLink]="resetPath">
+                        Log in
+                    </span>
+                </p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

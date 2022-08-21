@@ -1,0 +1,34 @@
+<mat-form-field appearance="outline" class="select-form">
+    <mat-label>{{ label }}</mat-label>
+    <mat-select
+        [formControl]="multiCtrl"
+        placeholder="{{ label }}"
+        [multiple]="multiple"
+        #multiSelect
+    >
+        <ngx-mat-select-search
+            name="multiFilterCtrl"
+            placeholderLabel="Search..."
+            noEntriesFoundLabel="No results found"
+            ngDefaultControl
+            [formControl]="multiFilterCtrl"
+        >
+        </ngx-mat-select-search>
+        <mat-option *ngFor="let data of filterMulti | async" [value]="data">
+            {{ data.viewValue }}
+        </mat-option>
+    </mat-select>
+    <button
+        *ngIf="multiple && showCrossIcon"
+        type="button"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearSelection($event)"
+    >
+        <mat-icon>close</mat-icon>
+    </button>
+    <mat-error *ngIf="errorHandling('required')" class="m-0 error-m">
+        {{ label }} is required
+    </mat-error>
+</mat-form-field>

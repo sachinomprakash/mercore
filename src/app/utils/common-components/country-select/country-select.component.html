@@ -1,0 +1,29 @@
+<ng-container *ngIf="countries; else load">
+    <mat-select-country
+        appearance="outline"
+        [ngClass]="errors ? 'select-dropdown error-select' : 'select-dropdown'"
+        label="{{ label != '' ? label : 'Select your country *' }}"
+        autocomplete="no"
+        [value]="countryFormControl?.value || selectedCountry"
+        [countries]="countries"
+        [formControl]="countryFormControl"
+        (onCountrySelected)="onCountrySelected($event)"
+        (focusout)="focusFunction($event)"
+        [placeHolder]="placeholder"
+        [required]="true"
+    >
+    </mat-select-country>
+    <mat-error *ngIf="errors" class="custom-error">
+        {{ errorMsg ? errorMsg : 'Country of Incorporation/Registration is required' }}
+    </mat-error>
+</ng-container>
+<ng-template #load>
+    <mat-select-country
+        label="Select your country"
+        class="select-dropdown"
+        appearance="outline"
+        label="Country"
+        [loading]="true"
+    >
+    </mat-select-country>
+</ng-template>

@@ -1,0 +1,67 @@
+.request-card {
+    width: 98%;
+    margin: auto;
+    .text-area {
+        label {
+            font-size: 12px;
+            color: var(--color-secondary-shadee);
+            font-family: Inter-Regular;
+        }
+    }
+    .submit {
+        background-color: var(--color-primary);
+        font-size: 14px;
+        color: var(--color-warning-contrast);
+        border: none;
+        padding: 8px 36px;
+        border-radius: 5px;
+        float: right;
+        &[disabled] {
+            color: var(--white-background);
+            background-color: var(--color-primary-contrast);
+        }
+    }
+
+    .mat-elevation-z8 {
+        box-shadow: none;
+    }
+}
+
+::ng-deep {
+    .mat-table thead {
+        background-color: var(--color-secondary);
+    }
+    .mat-header-cell {
+        font-size: 14px;
+        font-family: Inter-Regular;
+        color: #9ca1ab;
+    }
+    .table-data {
+        // color:var(--table-td-color);
+        color: #3a6b97;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .doc-name {
+        // color:var(--color-secondary-shadee)!important;
+        color: #7a8190;
+        cursor: pointer;
+    }
+    .upload-doc {
+        text-decoration: underline;
+        color: #161e30;
+        cursor: pointer;
+    }
+    tr.mat-row {
+        height: 68px !important;
+    }
+    .mat-cell {
+        font-size: 14px;
+        font-family: Inter-Regular;
+    }
+}
+@media screen and (max-width: 576px) {
+    .form-group {
+        width: 100% !important;
+    }
+}

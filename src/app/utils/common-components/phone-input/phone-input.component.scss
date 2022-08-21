@@ -1,0 +1,16 @@
+.custom-error {
+    // padding: 3px 10px;
+    font-size: 12px;
+    position: absolute;
+    bottom: -25px;
+    right: 65px;
+}
+@media screen and (max-width: 576px) {
+    .custom-error {
+        right: unset;
+    }
+}
+
+form {
+    position: relative;
+}

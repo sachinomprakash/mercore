@@ -1,0 +1,78 @@
+<mat-card class="main-wrap p-0">
+    <div>
+        <h2 mat-dialog-title>Progress Summary</h2>
+        <p>Below is an overview of your progress</p>
+    </div>
+    <div class="close" mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </div>
+
+    <mat-card-actions>
+        <ng-container>
+            <div class="wrap">
+                <div class="form-group d-flex align-items-center">
+                    <img src="assets/images/search.svg" alt="search" />
+                    <input
+                        type="text"
+                        class="searchTerm"
+                        (keyup)="filterDocs($event)"
+                        placeholder="Search document"
+                    />
+                </div>
+
+                <div class="tab">
+                    <mat-tab-group>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                View all
+                                <span class="number d-flex align-items-center">4</span>
+                            </ng-template>
+                            <app-progress-accordion
+                                [summaryDocs]="summaryDocs"
+                                *ngIf="summaryDocs; else ghostUI"
+                            >
+                            </app-progress-accordion>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                In progress
+                                <span class="number">{{ inProgressCount }}</span>
+                            </ng-template>
+                            <app-progress-accordion
+                                [summaryDocs]="inProgressDocs"
+                                *ngIf="summaryDocs; else ghostUI"
+                            >
+                            </app-progress-accordion>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                Submitted
+                                <span class="number">{{ submittedDocsCount }}</span>
+                            </ng-template>
+                            <app-progress-accordion
+                                [summaryDocs]="submittedDocs"
+                                *ngIf="summaryDocs; else ghostUI"
+                            >
+                            </app-progress-accordion>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                Completed
+                                <span class="number">{{ completedDocsCount }}</span>
+                            </ng-template>
+                            <app-progress-accordion
+                                [summaryDocs]="completedDocs"
+                                *ngIf="summaryDocs; else ghostUI"
+                            >
+                            </app-progress-accordion>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </ng-container>
+    </mat-card-actions>
+</mat-card>
+<ng-template #ghostUI>
+    <app-shimmer-loader type="table"></app-shimmer-loader>
+    <app-shimmer-loader type="table"></app-shimmer-loader>
+</ng-template>

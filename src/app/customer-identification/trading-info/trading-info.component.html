@@ -1,0 +1,226 @@
+<mat-card class="request-card p-sm-5 mt-4" *ngIf="industoryTrade; else ghostUI">
+    <div class="mb-4">
+        <div>
+            <img
+                src="assets/images/arrow-left.png"
+                (click)="back()"
+                class="mr-2 pointer"
+                alt="arrow"
+            /><span class="pointer" (click)="back()" s>Back</span>
+        </div>
+    </div>
+    <mat-card-title class="request-card_title mb-3"
+        >Please enter information about your Trading Activities
+    </mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="form">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="optional">Where applicable</div>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Trading name (if different to Company name)</mat-label>
+                        <input
+                            type="text"
+                            formControlName="trading_name"
+                            matInput
+                            placeholder="Trading name (if different to Company name)"
+                            maxlength="65"
+                        />
+                        <mat-error *ngIf="errorHandling('trading_name', 'required')">
+                            Trading name is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('trading_name', 'maxlength')">
+                            Trading name max length should be of 65 characters
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('trading_name', 'minlength')">
+                            Trading name min length should be of 2 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="request-card_trading-text mt-3 mb-2">
+                <h3>Trading Address</h3>
+                <mat-checkbox
+                    matSuffix
+                    formControlName="is_trading_address_same"
+                    (change)="setPrevAddress($event)"
+                >
+                    <span>Same as company registered address</span>
+                </mat-checkbox>
+            </div>
+            <ng-container *ngIf="!controls['is_trading_address_same'].value">
+                <div class="d-flex row">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Company trading address</mat-label>
+                            <input
+                                matInput
+                                placeholder="Company trading address"
+                                formControlName="tradingAddress"
+                                maxlength="85"
+                                [readonly]="controls['is_trading_address_same'].value"
+                            />
+                            <mat-error *ngIf="errorHandling('tradingAddress', 'required')">
+                                Company trading address is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Town/City</mat-label>
+                            <input
+                                matInput
+                                placeholder="Town/City"
+                                formControlName="city"
+                                maxlength="65"
+                                [readonly]="controls['is_trading_address_same'].value"
+                            />
+                            <mat-error *ngIf="errorHandling('city', 'required')">
+                                Town/City is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Postcode/zip</mat-label>
+                            <input
+                                matInput
+                                placeholder="Postcode/zip"
+                                formControlName="zip"
+                                maxlength="65"
+                                [readonly]="controls['is_trading_address_same'].value"
+                            />
+                            <mat-error *ngIf="errorHandling('zip', 'required')">
+                                Postcode/zip is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="row mt-sm-4">
+                <div class="col-md-6 business-card location-card">
+                    <img
+                        src="assets/images/info-circle.png"
+                        alt="email"
+                        matSuffix
+                        class="input-icon"
+                        mdePopoverPositionX="before"
+                        mdePopoverPositionY="below"
+                        [mdePopoverTriggerFor]="businessPopover"
+                        mdePopoverTriggerOn="hover"
+                        #popoverTrigger="mdePopoverTrigger"
+                    />
+                    <app-multi-select
+                        [items]="countries"
+                        [selected]="controls['physical_presence'].value"
+                        title="Business location(s)"
+                        searchPlaceholder="Search for Business location(s)"
+                        (onSelectItem)="selectItemEvent($event, 'physical_presence')"
+                    >
+                    </app-multi-select>
+                    <mde-popover #businessPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                        <div class="popover__content">
+                            <br />
+                            <p class="popover__message">
+                                Please select countries where your business has a physical presence,
+                                i.e., where offices/branches of your company are located. NB:
+                                exclude subsidiaries and/or parent companies.
+                            </p>
+                        </div>
+                    </mde-popover>
+                </div>
+
+                <div class="col-md-6 business-card">
+                    <img
+                        src="assets/images/info-circle.png"
+                        alt="email"
+                        matSuffix
+                        class="input-icon"
+                        mdePopoverPositionX="before"
+                        mdePopoverPositionY="below"
+                        [mdePopoverTriggerFor]="customerPopover"
+                        mdePopoverTriggerOn="hover"
+                        #popoverTrigger="mdePopoverTrigger"
+                    />
+                    <app-multi-select
+                        [items]="countries3"
+                        [selected]="controls['countries_of_presence_operations'].value"
+                        title="Customer location(s)"
+                        searchPlaceholder="Search for Customer location(s)"
+                        (onSelectItem)="selectItemEvent($event, 'countries_of_presence_operations')"
+                    ></app-multi-select>
+
+                    <mde-popover #customerPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                        <div class="popover__content">
+                            <br />
+                            <p class="popover__message">
+                                Please select countries where your customers are domiciled.
+                            </p>
+                        </div>
+                    </mde-popover>
+                </div>
+
+                <div class="mt-4 row mr-0 ml-0">
+                    <h3 class="head-title">Your expected activities with Mercore:</h3>
+                    <div class="col-md-6 mt-2 business-card">
+                        <img
+                            src="assets/images/info-circle.png"
+                            alt="email"
+                            matSuffix
+                            class="input-icon"
+                            mdePopoverPositionX="before"
+                            mdePopoverPositionY="below"
+                            [mdePopoverTriggerFor]="tradePopover"
+                            mdePopoverTriggerOn="hover"
+                            #popoverTrigger="mdePopoverTrigger"
+                        />
+                        <app-multi-select
+                            [items]="countries4"
+                            [selected]="controls['countries_of_intended_trade'].value"
+                            title="Countries of intended trade"
+                            searchPlaceholder="Search for countries of intended trade"
+                            (onSelectItem)="selectItemEvent($event, 'countries_of_intended_trade')"
+                        ></app-multi-select>
+                        <mde-popover #tradePopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                            <div class="popover__content">
+                                <br />
+                                <p class="popover__message">
+                                    Please select all countries you intend to include in your
+                                    activities with Mercore.
+                                </p>
+                            </div>
+                        </mde-popover>
+                    </div>
+
+                    <div class="col-md-6 location-card mt-2">
+                        <app-multi-select
+                            [items]="industoryTrade"
+                            [selected]="controls['sector_of_intended_trade'].value"
+                            title="Product/services of intended trade"
+                            searchPlaceholder="Search for Product/services of intended trade"
+                            (onSelectItem)="selectItemEvent($event, 'sector_of_intended_trade')"
+                        ></app-multi-select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <button
+            type="button"
+            color="primary"
+            mat-flat-button
+            class="w-100 mt-4"
+            [disabled]="form.invalid"
+            (click)="next($event)"
+        >
+            Finish
+        </button>
+    </mat-card-content>
+</mat-card>
+<ng-template #ghostUI>
+    <mat-card class="request-card p-sm-5 mt-4">
+        <app-shimmer-loader type="tradeform"></app-shimmer-loader>
+    </mat-card>
+</ng-template>

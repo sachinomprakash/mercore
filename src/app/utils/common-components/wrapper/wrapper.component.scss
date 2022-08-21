@@ -1,0 +1,12 @@
+.main-content-wrapper {
+    margin-top: 70px;
+    width: calc(100% - 260px);
+    margin-left: auto;
+    padding: 12px;
+}
+
+@media screen and (max-width: 576px) {
+    .main-content-wrapper {
+        width: 100%;
+    }
+}

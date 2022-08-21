@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="col-md-5 mx-auto">
+        <form [formGroup]="infoFormGroup">
+            <ng-template matStepLabel>Add Info</ng-template>
+            <div class="text-center head pt-3 mb-2">
+                <div class="text-center">
+                    <h4 class="mb-2">Add information</h4>
+                </div>
+                <div class="info text-center">
+                    <p>To add a new individual, please provide the following information.</p>
+                </div>
+            </div>
+            <mat-form-field appearance="outline" class="w-100 mt-3">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" placeholder="First Name" formControlName="first_name" />
+                <mat-error *ngIf="errorHandling('first_name', 'required')">
+                    First name is required
+                </mat-error>
+                <mat-error *ngIf="errorHandling('first_name', 'minlength')">
+                    First name min length should be of 3 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100 mt-4">
+                <mat-label>Middle Name</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Middle Name"
+                    formControlName="middle_name"
+                />
+                <mat-error *ngIf="errorHandling('middle_name', 'required')">
+                    Middle Name is required
+                </mat-error>
+                <mat-error *ngIf="errorHandling('middle_name', 'minlength')">
+                    Middle Name min length should be of 3 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100 mt-4">
+                <mat-label> Surname </mat-label>
+                <input matInput type="text" placeholder="Last name" formControlName="last_name" />
+                <mat-error *ngIf="errorHandling('last_name', 'required')">
+                    Surname is required
+                </mat-error>
+                <mat-error *ngIf="errorHandling('last_name', 'minlength')">
+                    Surname min length should be of 3 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100 mt-4">
+                <mat-label>Email </mat-label>
+                <input matInput type="text" placeholder="Email" formControlName="email" />
+                <mat-error *ngIf="errorHandling('email', 'required')">
+                    Email is required
+                </mat-error>
+                <mat-error *ngIf="errorHandling('email', 'pattern')"> Email is invalid </mat-error>
+            </mat-form-field>
+            <div class="select-roles mt-2 p-3">
+                <p>Select Role(s)</p>
+                <div class="pb-2 checkbox-wrap" *ngFor="let item of roles">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex">
+                            <img
+                                src="assets/images/info-circle.png"
+                                alt="email"
+                                matSuffix
+                                [mdePopoverTriggerFor]="infoPopover"
+                                mdePopoverTriggerOn="hover"
+                                #popoverTrigger="mdePopoverTrigger"
+                                mdePopoverPositionX="before"
+                                mdePopoverPositionY="below"
+                            />
+                            <mde-popover
+                                #infoPopover="mdePopover"
+                                [mdePopoverOverlapTrigger]="false"
+                            >
+                                <div class="popover__content">
+                                    <br />
+                                    <p class="popover__message">
+                                        {{ item.description }}
+                                    </p>
+                                </div>
+                            </mde-popover>
+                            <span>{{ item.personRoleMaster.name }}</span>
+                        </div>
+                        <div>
+                            <mat-checkbox
+                                (click)="selectedRole(item, $event)"
+                                [checked]="!item.is_active"
+                                class="example-margin"
+                            ></mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="py-3">
+                <button
+                    type="button"
+                    color="primary"
+                    mat-flat-button
+                    class="w-100 mt-4"
+                    [disabled]="!infoFormGroup.valid"
+                    (click)="next()"
+                >
+                    Next
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+.request-card {
+    box-shadow: 0px 5px 30px rgba(40, 50, 73, 0.04);
+    .add-btn {
+        border: 1px solid var(--color-tertiary-shade);
+        font-size: 14px;
+        font-family: Inter-Medium !important;
+    }
+    .submit-btn {
+        background-color: var(--color-primary);
+        font-size: 14px;
+        color: var(--color-tertiary-contrast) !important;
+        &[disabled] {
+            color: var(--white-background);
+            background-color: var(--color-primary-contrast);
+        }
+    }
+}
+
+.noDatavailable {
+    min-height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .noData {
+        color: var(--color-light-contrast) !important;
+        font-size: 14px;
+        font-family: Inter-Regular;
+    }
+}
+
+.stepindex {
+    ::ng-deep {
+        .mat-step-text-label {
+            color: var(--color-light-contrast);
+        }
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-icon {
+            height: 50px;
+            width: 50px;
+            margin-top: -7px;
+        }
+        .mat-step-header .mat-step-icon-selected {
+            background-color: var(--color-primary) !important;
+            color: var(--color-secondary-contrast) !important;
+        }
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-label {
+            padding: 10px 0 0 0;
+            font-size: 13px;
+        }
+
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header,
+        .mat-vertical-stepper-header {
+            padding: 17px 24px;
+        }
+        .mat-horizontal-stepper-header-container {
+            max-width: 43%;
+            margin: 0 auto;
+            @media (max-width: 576px) {
+                max-width: 100%;
+            }
+        }
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:not(:last-child)::after {
+            width: calc(50% - 40px) !important;
+        }
+        .mat-stepper-label-position-bottom
+            .mat-horizontal-stepper-header:not(:first-child)::before {
+            width: calc(50% - 40px) !important;
+        }
+    }
+    .mat-step-header:hover:not([aria-disabled]):hover {
+        background-color: transparent !important;
+    }
+}
+.thank-you {
+    img {
+        height: 65px;
+    }
+    .done-btn {
+        min-width: 20rem;
+    }
+}
+
+/*responsive design*/
+@media screen and (max-width: 576px) {
+    .button {
+        display: unset !important;
+        justify-content: unset !important;
+    }
+    .back-home {
+        position: absolute;
+        top: 14px;
+        left: 18px;
+    }
+    .navigation {
+        margin-top: 50px;
+    }
+    .top-btn {
+        position: absolute;
+        bottom: 21px;
+        display: unset !important;
+        justify-content: unset !important;
+        margin: 0px 31px;
+        left: 0;
+        right: 0;
+    }
+    .request-card .add-btn {
+        width: 100%;
+    }
+    .request-card .submit-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    ::ng-deep {
+        .stepindex
+            .mat-stepper-label-position-bottom
+            .mat-horizontal-stepper-header
+            .mat-step-icon {
+            height: 30px !important;
+            width: 30px !important;
+            margin-top: 2px;
+        }
+        .stepindex .mat-step-text-label {
+            font-size: 10px;
+        }
+        .mat-horizontal-content-container {
+            padding: unset i !important;
+        }
+        .stepindex .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+            padding: 9px 5px;
+        }
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::before {
+            top: 27px !important;
+        }
+    }
+}
+.alarm-dropdown {
+    position: absolute;
+    padding: 0px 25px;
+}
+.dropdown-sort {
+    ::ng-deep .mat-form-field-underline {
+        display: none;
+    }
+}
+.sort-icon {
+    width: 10%;
+    color: #95a0b9;
+}
+
+.alarm-dropdown ::ng-deep {
+    .mat-select-trigger {
+        right: 10%;
+    }
+}

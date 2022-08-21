@@ -1,0 +1,64 @@
+<div class="container-fluid overview-wrapper">
+    <div class="mb-3 mt-3" *ngIf="summaryDocs?.entity?.productInfo">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header
+                    class="default-cursor"
+                    #expansioPanel
+                    (click)="expansioPanel._toggle()"
+                >
+                    <mat-panel-title
+                        class="d-flex overview-wrapper_title"
+                        (click)="expansioPanel._toggle()"
+                    >
+                        Product Information
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-product-type
+                    [list_products]="summaryDocs?.entity?.productInfo?.list_products"
+                ></app-product-type>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <!--Company Informtaion accordion-->
+    <div class="mb-3" *ngIf="summaryDocs?.entity?.companyInfo">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header
+                    class="default-cursor"
+                    #expansioPanel
+                    (click)="expansioPanel._toggle()"
+                >
+                    <mat-panel-title
+                        class="d-flex overview-wrapper_title"
+                        (click)="expansioPanel._toggle()"
+                    >
+                        Company Information
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-company [companyInfo]="summaryDocs?.entity?.companyInfo"></app-company>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <!--Trading Information accordion-->
+    <div *ngIf="summaryDocs?.entity?.tradingInfo">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header
+                    class="default-cursor"
+                    #expansioPanel
+                    (click)="expansioPanel._toggle()"
+                >
+                    <mat-panel-title
+                        class="d-flex overview-wrapper_title"
+                        (click)="expansioPanel._toggle()"
+                    >
+                        Trading Information
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <app-trading [tradingInfo]="summaryDocs.entity?.tradingInfo"></app-trading>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

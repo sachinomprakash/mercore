@@ -1,0 +1,120 @@
+stages:
+    - sonarqube_test
+    - build_dev
+    - deploy_dev
+    - build_testing
+    - deploy_testing
+    - build_staging
+    - deploy_staging
+    - cleanup
+
+sonarqube:
+    stage: sonarqube_test
+    image:
+        name: sonarsource/sonar-scanner-cli:4.6
+        entrypoint: ['']
+    variables:
+        IP_SONAR_MACHINE: '10.1.1.1'
+    cache:
+        key: '${CI_JOB_NAME}'
+        paths:
+            - .sonar/cache
+            - .scannerwork
+    script:
+        - |
+            sonar-scanner \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=$SONARQUBE_HOST \
+              -Dsonar.projectKey=$PROJECT_NAME \
+              -Dsonar.login=$TOKEN
+    only:
+        - development
+    tags:
+        - mercore-runner-docker
+
+build_dev:
+    image: node:14
+    stage: build_dev
+    script:
+        - npm install
+        - npm run build
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - dist
+    only:
+        - development
+    tags:
+        - mercore-runner-docker
+
+deploy_dev:
+    image:
+        name: amazon/aws-cli
+        entrypoint: ['']
+    stage: deploy_dev
+    script:
+        - ls dist/mercore/
+        - aws s3 cp dist/mercore/ s3://$DEV_BUCKET/ --recursive
+        - aws cloudfront create-invalidation --distribution-id $DEV_DISTRIBUTION_ID --paths "/*"
+    only:
+        - development
+    tags:
+        - mercore-runner-docker
+
+build_testing:
+    image: node:14
+    stage: build_testing
+    script:
+        - npm install
+        - npm run build:testing
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - dist
+    only:
+        - testing
+    tags:
+        - mercore-runner-docker
+
+deploy_testing:
+    image:
+        name: amazon/aws-cli
+        entrypoint: ['']
+    stage: deploy_testing
+    script:
+        - ls dist/mercore/
+        - aws s3 cp dist/mercore/ s3://$TESTING_BUCKET/ --recursive
+        - aws cloudfront create-invalidation --distribution-id $TESTING_DISTRIBUTION_ID --paths "/*"
+    only:
+        - testing
+    tags:
+        - mercore-runner-docker
+
+build_staging:
+    image: node:14
+    stage: build_staging
+    script:
+        - npm install
+        - npm run build:staging
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - dist
+    only:
+        - staging
+    tags:
+        - mercore-runner-docker
+
+deploy_staging:
+    image:
+        name: amazon/aws-cli
+        entrypoint: ['']
+    stage: deploy_staging
+    script:
+        - ls dist/mercore/
+        - aws s3 cp dist/mercore/ s3://$STAGING_BUCKET/ --recursive
+        - aws cloudfront create-invalidation --distribution-id $STAGING_DISTRIBUTION_ID --paths "/*"
+    only:
+        - staging
+    tags:
+        - mercore-runner-docker

@@ -1,0 +1,464 @@
+<mat-card class="request-card p-sm-5 mt-4" *ngIf="legalEnitityArr.length > 0; else ghostUI">
+    <div class="mb-4">
+        <div>
+            <img
+                src="assets/images/arrow-left.png"
+                (click)="back()"
+                class="mr-2 pointer"
+                alt="arrow"
+            /><span class="pointer" (click)="back()" s>Back</span>
+        </div>
+    </div>
+    <mat-card-title class="request-card_title mb-3"
+        >Please enter Company Information</mat-card-title
+    >
+    <mat-card-content>
+        <form [formGroup]="companyInfoForm">
+            <div class="d-flex justify-content-sm-around row mt-3">
+                <div class="col-md-4">
+                    <div class="country">
+                        <app-country-select
+                            [label]="'Country of incorporation / registration'"
+                            [selectedCountry]="selectedCountry"
+                            [countries]="countries"
+                            (onCountrySelect)="countrySelected($event)"
+                        >
+                        </app-country-select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Company number</mat-label>
+                        <img
+                            src="assets/images/info-circle.png"
+                            alt="email"
+                            matSuffix
+                            class="input-icon"
+                            [mdePopoverTriggerFor]="numberPopover"
+                            mdePopoverTriggerOn="hover"
+                            #popoverTrigger="mdePopoverTrigger"
+                        />
+
+                        <mde-popover
+                            #numberPopover="mdePopover"
+                            mdePopoverPositionX="before"
+                            mdePopoverPositionY="below"
+                            [mdePopoverOverlapTrigger]="false"
+                        >
+                            <div class="popover__content">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Company number</h6>
+                                </div>
+                                <p class="popover__message">
+                                    This should be the official unique identification/registration
+                                    number for the legal entity.
+                                </p>
+                            </div>
+                        </mde-popover>
+                        <input
+                            matInput
+                            type="text"
+                            placeholder="Company registration number"
+                            formControlName="company_registration_number"
+                            maxlength="65"
+                            (keyup)="fetchKompanyData($event, 'registrationNumber', 'registration')"
+                        />
+                        <mat-error *ngIf="errorHandling('company_registration_number', 'required')">
+                            Company registration number is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="errorHandling('company_registration_number', 'minlength')"
+                        >
+                            Company registration number should be of at least 2 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>LEI number / LEI registered name</mat-label>
+                        <span
+                            class="material-icons"
+                            matPrefix
+                            *ngIf="!companyInfoForm.value.lei_number"
+                        >
+                            search
+                        </span>
+                        <button
+                            *ngIf="companyInfoForm.value.lei_number"
+                            matSuffix
+                            mat-icon-button
+                            aria-label="Clear"
+                            (click)="clearInput()"
+                        >
+                            <mat-icon>close</mat-icon>
+                        </button>
+                        <img
+                            *ngIf="!companyInfoForm.value.lei_number"
+                            src="assets/images/info-circle.png"
+                            alt="email"
+                            matSuffix
+                            class="input-icon"
+                            [mdePopoverTriggerFor]="leiPopover"
+                            mdePopoverTriggerOn="hover"
+                            #popoverTrigger="mdePopoverTrigger"
+                            mdePopoverPositionX="before"
+                            mdePopoverPositionY="below"
+                        />
+                        <mde-popover #leiPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                            <div class="popover__content">
+                                <div class="d-flex justify-content-between">
+                                    <h6>LEI number</h6>
+                                </div>
+                                <p class="popover__message">
+                                    Legal entity identifier number issued by
+                                    <a
+                                        href="https://www.gleif.org/en/"
+                                        target="blank"
+                                        rel="noopener noreferrer"
+                                        >GLEIF</a
+                                    >
+                                    . Hint: You can also search by company name
+                                </p>
+                            </div>
+                        </mde-popover>
+                        <input
+                            (keyup)="fetchGliefData()"
+                            matInput
+                            type="text"
+                            autocomplete="off"
+                            formControlName="lei_number"
+                            placeholder="LEI number / LEI registered name"
+                            maxlength="20"
+                            title="{{ companyInfoForm.value.lei_number }}"
+                        />
+                        <!-- (keyup)="fetchGliefData($event, 'leiNumber', 'lei')" -->
+                        <mat-error *ngIf="errorHandling('lei_number', 'pattern')">
+                            Invalid LEI number
+                        </mat-error>
+                    </mat-form-field>
+
+                    <span *ngIf="!errorHandling('lei_number', 'pattern')" class="optional"
+                        >Where applicable</span
+                    >
+                    <div *ngIf="!showLoader; else showLoading">
+                        <div
+                            *ngIf="hideLeiDropdown && companyInfoForm.value.lei_number"
+                            class="dropdown-option"
+                        >
+                            <div *ngIf="gliefItems.length > 0; else noDataFound">
+                                <div *ngFor="let items of gliefItems">
+                                    <mat-option
+                                        value="items?.data?.id"
+                                        (click)="setLeiNumber(items?.data?.id)"
+                                    >
+                                        <span>{{ items?.name?.value }}</span> <br />
+                                        <small>{{ items?.data?.id }}</small>
+                                    </mat-option>
+                                </div>
+                            </div>
+                            <ng-template #noDataFound>
+                                <div class="p-3" *ngIf="errorHandling('lei_number', 'pattern')">
+                                    No data found
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+
+                    <ng-template #showLoading>
+                        <div
+                            class="dropdown-option loader"
+                            *ngIf="showLoader && companyInfoForm.value.lei_number"
+                        >
+                            <app-loader class="loader-pos"></app-loader>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="d-flex justify-content-around row mt-3">
+                <div class="col-md-6">
+                    <app-multiselect-search-dropdown
+                        *ngIf="legalEnitityListValue.length > 0"
+                        [label]="'Legal Form'"
+                        [multiple]="false"
+                        [selectedValues]="[cipData?.legal_entity_form_id]"
+                        (formValid)="selectValid($event, 'legalEntity')"
+                        [array]="legalEnitityListValue"
+                    >
+                    </app-multiselect-search-dropdown>
+                </div>
+                <div class="col-md-6 position-remative industry-field">
+                    <app-multiselect-search-dropdown
+                        *ngIf="industrySectorArr.length > 0"
+                        [selectedValues]="cipData?.industry_sectors"
+                        [label]="'Industry Sector'"
+                        [multiple]="true"
+                        (formValid)="selectValid($event, 'industry')"
+                        [array]="industrySectorArr"
+                    >
+                    </app-multiselect-search-dropdown>
+                    <img
+                        src="assets/images/info-circle.png"
+                        alt="email"
+                        matSuffix
+                        class="tooltip-icon"
+                        [mdePopoverTriggerFor]="industryPopover"
+                        mdePopoverTriggerOn="hover"
+                        #popoverTrigger="mdePopoverTrigger"
+                    />
+                    <mde-popover
+                        #industryPopover="mdePopover"
+                        mdePopoverPositionX="before"
+                        mdePopoverPositionY="below"
+                        [mdePopoverOverlapTrigger]="false"
+                    >
+                        <div class="popover__content">
+                            <br />
+                            <p class="popover__message">
+                                This list is based on the International Standard Classification of
+                                All Economic Activities (ISIC codes). More information can be found
+                                <a
+                                    href="https://unstats.un.org/unsd/classifications/Econ/ISIC.cshtml"
+                                    target="blank"
+                                    rel="noopener noreferrer"
+                                    >here</a
+                                >
+                            </p>
+                        </div>
+                    </mde-popover>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Registered Company Name</mat-label>
+                        <input
+                            matInput
+                            placeholder="Registered Company Name"
+                            formControlName="company_name"
+                            maxlength="65"
+                            (change)="fetchKompanyData($event, 'companyName', 'company')"
+                        />
+                        <mat-error *ngIf="errorHandling('company_name', 'required')">
+                            Registered company name is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('company_name', 'minlength')">
+                            Registered company name should be of at least 2 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Previous company name(s)</mat-label>
+                        <img
+                            src="assets/images/info-circle.png"
+                            alt="email"
+                            matSuffix
+                            class="input-icon"
+                            [mdePopoverTriggerFor]="prevPopover"
+                            mdePopoverTriggerOn="hover"
+                            #popoverTrigger="mdePopoverTrigger"
+                        />
+
+                        <mde-popover #prevPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+                            <div class="popover__content">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Previous company name(s)</h6>
+                                </div>
+                                <p class="popover__message">
+                                    Previous registered company names within the last 10 years.
+                                </p>
+                            </div>
+                        </mde-popover>
+                        <mat-chip-list #chipList aria-label="Fruit selection">
+                            <mat-chip
+                                *ngFor="let company of companys"
+                                (removed)="remove(company)"
+                                class="chip"
+                            >
+                                <span class="truncate">{{ company.name }}</span>
+                                <button matChipRemove>
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip>
+                            <input
+                                placeholder="Previous company name(s)"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event)"
+                            />
+                        </mat-chip-list>
+                    </mat-form-field>
+                    <mat-error class="chip-error" *ngIf="chipLength >= 256"
+                        >Previous company name must be less than 257 characters</mat-error
+                    >
+                    <span class="optional">Where applicable</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <label class="optional mb-0">Date of Incorporation</label>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex request-card_calender">
+                                <div class="request-card_calender_date">
+                                    <mat-form-field class="select-field" appearance="outline">
+                                        <mat-label>day</mat-label>
+                                        <mat-select formControlName="day">
+                                            <mat-option
+                                                *ngFor="let day of dayOptions"
+                                                [value]="day.value"
+                                            >
+                                                {{ day.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <span class="optional">Optional</span>
+                                </div>
+                                <div class="request-card_calender_month">
+                                    <mat-form-field class="select-field" appearance="outline">
+                                        <mat-label>month</mat-label>
+                                        <mat-select
+                                            formControlName="month"
+                                            (valueChange)="getDaysInMonth($event)"
+                                        >
+                                            <mat-option
+                                                *ngFor="let month of monthOptions"
+                                                [value]="month.value"
+                                            >
+                                                {{ month.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <span class="optional">Optional</span>
+                                </div>
+                                <div class="request-card_calender_year">
+                                    <app-multiselect-search-dropdown
+                                        *ngIf="yearOptions.length > 0"
+                                        [label]="'year'"
+                                        [multiple]="false"
+                                        [selectedValues]="[
+                                            cipData?.date_of_incorporation_object?.year
+                                        ]"
+                                        (formValid)="selectValid($event, 'year')"
+                                        [array]="yearOptions"
+                                    >
+                                    </app-multiselect-search-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Company registered address</mat-label>
+                                <input
+                                    matInput
+                                    placeholder="Company registered address"
+                                    formControlName="address"
+                                    maxlength="85"
+                                />
+                                <mat-error *ngIf="errorHandling('address', 'required')">
+                                    Company address is required
+                                </mat-error>
+                                <mat-error *ngIf="errorHandling('address', 'minlength')">
+                                    Company address should be of at least 2 characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Town/City</mat-label>
+                        <input
+                            matInput
+                            placeholder="Town/City"
+                            formControlName="city"
+                            maxlength="65"
+                        />
+                        <mat-error *ngIf="errorHandling('city', 'required')">
+                            Town/City is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('city', 'minlength')">
+                            Town/City should be of at least 2 characters
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Postcode/ZIP</mat-label>
+                        <input
+                            class="text-uppercase"
+                            matInput
+                            placeholder="Postcode/ZIP"
+                            formControlName="zipcode"
+                        />
+                        <mat-error *ngIf="errorHandling('zipcode', 'required')">
+                            Postcode/ZIP is required
+                        </mat-error>
+                        <mat-error *ngIf="errorHandling('zipcode', 'pattern')">
+                            Postcode/ZIP is invalid
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <span class="optional">Optional</span>
+                    <div class="d-flex server-dropdown align-item-center">
+                        <!-- <mat-form-field class="btn" appearance="outline">
+                            <mat-label>https//:</mat-label>
+                            <mat-select formControlName="domain">
+                                <mat-option *ngFor="let domain of domains" [value]="domain.value">
+                                    {{ domain.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Company website</mat-label>
+                            <input
+                                matInput
+                                placeholder="Company website"
+                                formControlName="company_Website"
+                            />
+                            <mat-error *ngIf="errorHandling('company_Website', 'pattern')">
+                                Company website is invalid
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-md-6 search-country">
+                    <span class="optional">Optional</span>
+                    <app-phone-input
+                        class="w-100"
+                        [value]="constrols['company_phone_number'].value"
+                        [validErrorMsg]="'Please enter a valid phone number'"
+                        [countryISO2]="selectedCountry?.alpha2Code?.toLowerCase()"
+                        (phoneValidation)="checkPhoneValidation($event)"
+                        class="w-100"
+                    >
+                    </app-phone-input>
+                </div>
+            </div>
+        </form>
+        <button
+            mat-flat-button
+            color="primary"
+            class="request-card_next-btn mt-4 w-100"
+            [disabled]="!companyInfoForm.valid"
+            (click)="submitForm()"
+        >
+            Next
+        </button>
+    </mat-card-content>
+</mat-card>
+<!-- shimmer loader -->
+<ng-template #ghostUI>
+    <mat-card class="request-card p-sm-5 mt-4">
+        <app-shimmer-loader type="form"></app-shimmer-loader>
+    </mat-card>
+</ng-template>

@@ -1,0 +1,196 @@
+<mat-card class="request-card p-sm-5 mt-2" *ngIf="cardSwitch">
+    <div class="mb-4 navigation">
+        <div class="d-flex justify-content-between">
+            <span class="pointer outer-div" (click)="back()">
+                <mat-icon class="pointer mr-2">arrow_back</mat-icon>
+                Back
+            </span>
+            <span class="float-right outer-div pointer" (click)="forward()" *ngIf="!showAdd">
+                Forward
+                <mat-icon class="pointer ml-2">arrow_forward</mat-icon>
+            </span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p class="request-card_title">
+            {{ heading }}
+            <img
+                src="assets/images/info-circle.png"
+                alt="tooltip"
+                matSuffix
+                *ngIf="heading === 'Connected individuals'"
+                [mdePopoverTriggerFor]="connectedIndividualPopover"
+                mdePopoverTriggerOn="hover"
+                #popoverTrigger="mdePopoverTrigger"
+                mdePopoverPositionX="before"
+                mdePopoverPositionY="below"
+            />
+            <mde-popover
+                #connectedIndividualPopover="mdePopover"
+                [mdePopoverOverlapTrigger]="false"
+            >
+                <div class="popover__content">
+                    <br />
+                    <p class="popover__message">
+                        Connected individuals are the individual(s) who ultimately own and/or
+                        control the entity. Please include all Executive Directors (or equivalent),
+                        Ultimate Beneficial Owners, Significant Controllers, Intermediate Beneficial
+                        Owners, Significant Controllers and Senior Management (where applicable)
+                    </p>
+                </div>
+            </mde-popover>
+        </p>
+        <div class="d-flex back-home">
+            <button mat-stroked-button class="mr-3" (click)="returnHome()">
+                <img src="assets/images/home-Icon.svg" class="mr-2" alt="home-ico" /><span
+                    class="icon-btn-text"
+                    >Return to home</span
+                >
+            </button>
+        </div>
+    </div>
+    <p class="sub_title">
+        {{ subText }}
+    </p>
+    <hr />
+    <mat-form-field class="dropdown-sort float-left" *ngIf="!showAdd">
+        <span class="sort-icon">
+            <img src="assets/images/sort.svg" class="mr-1" alt="home-ico" /> Filter
+        </span>
+        <mat-select
+            class="alarm-dropdown"
+            trigger="alarmTrigger"
+            #alarmSelect
+            (valueChange)="getFilteredValue($event)"
+        >
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+                {{ role.viewValue }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="d-flex justify-content-end">
+        <button mat-stroked-button class="add-btn" (click)="showAddInd()" *ngIf="!showAdd">
+            Add Individual
+        </button>
+        <button
+            mat-stroked-button
+            color="primary"
+            class="submit-btn ml-sm-2"
+            [disabled]="connectedIndividuals?.length == 0"
+            (click)="forward()"
+            *ngIf="!showAdd"
+        >
+            Submit
+        </button>
+    </div>
+    <!--empty state -->
+    <div *ngIf="connectedIndividuals; else ghostUI">
+        <div *ngIf="!showAdd && connectedIndividuals.length === 0" class="noDatavailable">
+            <div>
+                <div class="text-center py-3">
+                    <img src="assets/images/empty-connected.svg" alt="empty" class="w-100" />
+                </div>
+                <span class="noData">No individuals added yet</span>
+            </div>
+        </div>
+
+        <app-icon-table
+            *ngIf="!showAdd && connectedIndividuals.length > 0"
+            [records]="connectedIndividuals"
+            [component]="'connectedIndividuals'"
+            [tableHeader]="header"
+            (actionTrigger)="tableAction($event)"
+        >
+        </app-icon-table>
+    </div>
+
+    <div class="row">
+        <div class="mx-auto col-md-12 mt-3 stepindex" *ngIf="showAdd">
+            <mat-stepper
+                labelPosition="bottom"
+                [linear]="isLinear"
+                #individualStepper
+                (selectionChange)="move($event.selectedIndex)"
+            >
+                <ng-template matStepperIcon="edit">
+                    <mat-icon>edit</mat-icon>
+                </ng-template>
+                <ng-template matStepperIcon="done">
+                    <mat-icon>done</mat-icon>
+                </ng-template>
+
+                <mat-step [stepControl]="firstFormGroup">
+                    <ng-template matStepLabel>Add Info</ng-template>
+                    <!-- info screen -->
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <!-- doc upload screen -->
+                    <ng-template matStepLabel>Identity verification</ng-template>
+                </mat-step>
+                <ng-container *ngIf="sourcesWealthStepperActive">
+                    <mat-step [stepControl]="thirdFormGroup">
+                        <!-- sources of wealth -->
+                        <ng-template matStepLabel>Sources Of Wealth</ng-template>
+                    </mat-step>
+                </ng-container>
+            </mat-stepper>
+
+            <div class="form-screen">
+                <span [ngSwitch]="selectedIndex">
+                    <div *ngSwitchCase="0">
+                        <app-add-info
+                            [entityId]="entityId"
+                            [formId]="formId"
+                            [personInfo]="personDetails"
+                            (addInfoValid)="addInfoFormValid($event, individualStepper)"
+                        ></app-add-info>
+                    </div>
+                    <div *ngSwitchCase="1">
+                        <app-add-docs
+                            [entityId]="entityId"
+                            [personInfo]="personDetails"
+                            [personDocuments]="personDocs"
+                            (docComplete)="forward()"
+                        ></app-add-docs>
+                    </div>
+                    <div *ngSwitchCase="2">
+                        <app-sources-of-wealth [entityId]="entityId" [personInfo]="personDetails">
+                        </app-sources-of-wealth>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <!-- <div class="row" *ngIf="showAdd && showThankYou">
+            <ng-container>
+                <div class="thank-you mt-3">
+                    <div class="mx-auto text-center mt-5">
+                        <img src="assets/images/success.png" />
+                    </div>
+                    <div class="text-center head mt-4 mb-4">
+                        <div class="text-center">
+                            <h4 class="mb-2 mt-2">Connected Individual added successfully</h4>
+                        </div>
+                        <div class="info text-center">
+                            <p>
+                                You can edit the information provided for this individual on the
+                                Connected Individuals screen.
+                            </p>
+                        </div>
+                        <button mat-stroked-button class="done-btn mt-5" (click)="hideStepper()">
+                            Done
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </div> -->
+    </div>
+</mat-card>
+<!-- shimmer loader -->
+<ng-template #ghostUI>
+    <div class="card p-3 w-100">
+        <div class="member-item" *ngFor="let item of [0, 1]">
+            <app-shimmer-loader type="table"></app-shimmer-loader>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,31 @@
+<div class="cross-icon" mat-dialog-close *ngIf="crossIconVisibilityVar">
+    <img src="assets/images/close.svg" alt="" />
+</div>
+<mat-dialog-content class="text-center">
+    <p>
+        {{ message }}
+    </p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button mat-flat-button color="primary" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button>
+	<button mat-flat-button mat-dialog-close tabindex="-1">{{cancelButtonText}}</button> -->
+    <button
+        mat-flat-button
+        color="primary"
+        class="mt-4 confirm-dialog-btn w-100"
+        (click)="onConfirmClick()"
+    >
+        {{ confirmButtonText }}
+    </button>
+    <div class="text-center">
+        <button
+            mat-flat-button
+            color="primary"
+            class="cancel-btn mt-2 w-30"
+            mat-dialog-close
+            tabindex="-1"
+        >
+            {{ cancelButtonText }}
+        </button>
+    </div>
+</mat-dialog-actions>

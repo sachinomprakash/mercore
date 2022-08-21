@@ -1,0 +1,69 @@
+<mat-card class="main-wrap">
+    <mat-card-title>Home</mat-card-title>
+    <mat-card-subtitle>See all your applications below</mat-card-subtitle>
+    <mat-card-actions>
+        <ng-container class="d-flex justify-content-between">
+            <div class="tab">
+                <mat-form-field appearance="outline" class="search-field">
+                    <mat-label>Search</mat-label>
+                    <input
+                        matInput
+                        placeholder="Search by Id, Entity name"
+                        maxlength="65"
+                        (keyup)="seachCases($event)"
+                    />
+                </mat-form-field>
+                <mat-tab-group>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            View all
+                            <span class="number d-flex align-items-center">{{ cases.length }}</span>
+                        </ng-template>
+                        <app-table
+                            [tableHeader]="tableHeader"
+                            (actionTrigger)="onActionTrigger($event)"
+                            [records]="cases"
+                        >
+                        </app-table>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            In progress
+                            <span class="number">{{ inProgressCases.length }}</span>
+                        </ng-template>
+                        <app-table
+                            [tableHeader]="tableHeader"
+                            (actionTrigger)="onActionTrigger($event)"
+                            [records]="inProgressCases"
+                        >
+                        </app-table>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            Submitted
+                            <span class="number">{{ submittedCases.length }}</span>
+                        </ng-template>
+                        <app-table
+                            [tableHeader]="tableHeader"
+                            (actionTrigger)="onActionTrigger($event)"
+                            [records]="submittedCases"
+                        >
+                        </app-table>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            Completed
+                            <span class="number">{{ completedCases.length }}</span>
+                        </ng-template>
+                        <app-table
+                            [tableHeader]="tableHeader"
+                            (actionTrigger)="onActionTrigger($event)"
+                            [records]="completedCases"
+                        >
+                        </app-table>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </ng-container>
+    </mat-card-actions>
+</mat-card>

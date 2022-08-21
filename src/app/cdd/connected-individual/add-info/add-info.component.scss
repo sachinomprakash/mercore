@@ -1,0 +1,18 @@
+.select-roles {
+    border: 1px solid var(--color-primary-contrast);
+    border-radius: 8px;
+    p {
+        color: var(--gray-background);
+        font-family: Inter-Regular;
+    }
+    span {
+        color: rgba(24, 24, 25, 0.9);
+        padding-left: 10px;
+        margin: 0px;
+        font-family: Inter-Medium;
+    }
+
+    .checkbox-wrap {
+        position: relative;
+    }
+}
