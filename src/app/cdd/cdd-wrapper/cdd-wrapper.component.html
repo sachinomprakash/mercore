@@ -112,7 +112,7 @@
                         >
                         </app-additional-request>
                     </div>
-                    <div *ngSwitchDefault>
+                    <div *ngSwitchCase="'Company Profile'">
                         <app-document-container [entityId]="case.entity_id" [caseId]="caseId">
                         </app-document-container>
                     </div>
@@ -127,7 +127,7 @@
                     <div *ngSwitchCase="2">
                     </div>
                     <div *ngSwitchCase="3">
-                       
+
                     </div>
                     <div *ngSwitchCase="4">
                         <app-cip-thankyou [applicationRef]="case?.application_number" [component]="'cdd'">

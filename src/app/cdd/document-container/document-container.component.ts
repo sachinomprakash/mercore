@@ -1,5 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnInit,
+    OnChanges,
+    ChangeDetectorRef
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { CDDRequest } from 'src/app/utils/constants/cdd.constants';
 import { modulePath } from 'src/app/utils/constants/route.constant';
 import { CommonService } from 'src/app/utils/services/common/common.service';
@@ -8,9 +16,10 @@ import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-s
 @Component({
     selector: 'app-document-container',
     templateUrl: './document-container.component.html',
-    styleUrls: ['./document-container.component.scss']
+    styleUrls: ['./document-container.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentContainerComponent implements OnInit {
+export class DocumentContainerComponent implements OnInit, OnChanges {
     @Input() entityId: any;
     @Input() caseId: any;
     files: any;
@@ -18,12 +27,18 @@ export class DocumentContainerComponent implements OnInit {
     constructor(
         private commonService: CommonService,
         private router: Router,
-        private cddServiceService: CddServiceService
+        private cddServiceService: CddServiceService,
+        private cdRef: ChangeDetectorRef
     ) {}
     ngOnInit(): void {
-        this.cddServiceService.selectedStepData.subscribe(res => {
-            this.stepInfo = res;
-        });
+        this.cddServiceService
+            .getSelectedStepData()
+            .pipe(take(1))
+            ?.subscribe((res: any) => {
+                console.log('console', res);
+                this.stepInfo = res;
+                this.cdRef.markForCheck();
+            });
     }
     ngOnChanges(): void {}
 

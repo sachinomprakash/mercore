@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+/* eslint-disable indent */
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output
+} from '@angular/core';
 import { finalize } from 'rxjs';
 import { IFile } from 'src/app/models/case.model';
 import { PersonModel } from 'src/app/models/cdd.model';
@@ -10,8 +19,8 @@ import { FileUploadService } from '../../services/httpServices/upload/file-uploa
 @Component({
     selector: 'app-upload-container',
     templateUrl: './upload-container.component.html',
-    styleUrls: ['./upload-container.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./upload-container.component.scss']
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UploadContainerComponent implements OnInit, OnChanges {
     @Input() docFiles?: IFile;
@@ -253,7 +262,7 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     this.document_id,
                     this.entityId,
                     this.sow_id
-                ).pipe(finalize(()=>    this.documentService.setvalue(true)))
+                )
                 .subscribe({
                     next: (res: any) => {
                         this.documentService.docUploaded.next({
@@ -267,9 +276,9 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     error: err => this.alertService.openSnackBar(err.error.message, 'error')
                 });
         }
-        console.log('saved');
-        
-        this.documentService.setvalue(true);
+        console.log('saved', this.documentService);
+        this.documentService.setMoveToNextDocType(true);
+        // this.documentService.setvalue(true);
 
         if (this.files && this.files?.length) {
         }

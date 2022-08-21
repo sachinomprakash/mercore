@@ -1,6 +1,13 @@
 import { KycService } from './../../utils/services/httpServices/kyc.service';
 import { DocumentService } from './../../utils/services/docService/document.service';
-import { Component, DoCheck, OnInit, ViewChild } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    DoCheck,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { CommonService } from 'src/app/utils/services/common/common.service';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
@@ -22,6 +29,7 @@ import { ConnectedIndividualsService } from 'src/app/utils/services/httpServices
             useValue: { displayDefaultIndicatorType: false }
         }
     ]
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CddWrapperComponent implements OnInit, DoCheck {
     selectedIndex: number = 0;
@@ -48,7 +56,8 @@ export class CddWrapperComponent implements OnInit, DoCheck {
         public dialog: MatDialog,
         private documentService: DocumentService,
         private connectedIndividualsService: ConnectedIndividualsService,
-        private kycService: KycService
+        private kycService: KycService,
+        private cdRef: ChangeDetectorRef
     ) {}
     @ViewChild('stepper') private myStepper: MatStepper;
     ngOnInit(): void {
@@ -101,9 +110,10 @@ export class CddWrapperComponent implements OnInit, DoCheck {
     }
 
     move(index: any) {
+        console.log('move', index);
         this.selectedIndex = index;
         this.selectedStepObj = this.entityDocs[index];
-        this.cddServiceService.selectedStepData.next(this.entityDocs[index]);
+        this.cddServiceService.setSelectedStepData(this.entityDocs[index]);
         this.stepperIndex = index;
     }
 
@@ -121,6 +131,7 @@ export class CddWrapperComponent implements OnInit, DoCheck {
             this.case = new Case(res.result);
             this.getAllQuestionList();
             this.getAllPeople();
+            this.cdRef.markForCheck();
         });
     }
 

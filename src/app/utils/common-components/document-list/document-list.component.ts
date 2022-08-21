@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -8,6 +9,7 @@ import {
     OnInit,
     Output
 } from '@angular/core';
+import { first, take } from 'rxjs/operators';
 import { IDocRequest, IFile } from 'src/app/models/case.model';
 import { CommonService } from '../../services/common/common.service';
 import { DocumentService } from '../../services/docService/document.service';
@@ -19,37 +21,63 @@ import { CddServiceService } from '../../services/httpServices/cdd/cdd-service.s
     styleUrls: ['./document-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DocumentListComponent implements OnInit, OnDestroy {
-    @Input() docList?: any;
+export class DocumentListComponent implements OnInit, OnDestroy, OnChanges {
+    @Input() set docList(val: any) {
+        console.log(val);
+        this.docList1 = val;
+    }
     @Input() title?: string;
     fileList: IFile[] = [];
     @Output() activeDocument = new EventEmitter<any>();
     @Output() onDocComplete = new EventEmitter();
     constructor(
         private cddServiceService: CddServiceService,
-        private documentService: DocumentService
+        private documentService: DocumentService,
+        private cdRef: ChangeDetectorRef
     ) {}
     completedDoc: any;
     selectedFile: IFile;
+    docList1: any;
 
-    ngOnInit(): void {
-        this.cddServiceService.selectedStepData.subscribe((res: any) => {
-            console.log(res);
-            this.docList = res.types;
-            if (this.docList.length > 0) {
-                this.fileList = this.docList;
-                const activeDoc = this.docList.find((file: any) => !file.files.length);
-                activeDoc
-                    ? this.selectedDocument(activeDoc)
-                    : this.selectedDocument(this.docList[0]);
-            }
-        });
-        this.documentService.getvalue().subscribe(res => {
+    ngOnInit(): void {}
+
+    ngOnChanges(): void {
+        this.cddServiceService
+            .getSelectedStepData()
+            .pipe(take(1))
+            .subscribe((res: any) => {
+                console.log('gaurav ');
+                // this.docList1 = res.types;
+                if (this.docList1.length > 0) {
+                    this.fileList = this.docList1;
+                    const activeDoc = this.docList1.find((file: any) => !file.files?.length);
+                    activeDoc
+                        ? this.selectedDocument(activeDoc)
+                        : this.selectedDocument(this.docList1[0]);
+                }
+                this.cdRef.markForCheck();
+            });
+
+        this.documentService.getMoveToNextDocType().subscribe((res: any) => {
+            console.log('am I here?', res);
+
+            console.log('on init');
             if (res) {
-                console.log('called');
                 this.nextDoc();
             }
         });
+
+        // this.documentService
+        //     .getMoveToNextDocType()
+        //     .pipe(take(1))
+        //     .subscribe(res => {
+        //         console.log('am I here?');
+
+        //         if (res) {
+        //             console.log('sachin');
+        //             this.nextDoc();
+        //         }
+        //     });
     }
     ngOnDestroy(): void {}
 
@@ -75,5 +103,6 @@ export class DocumentListComponent implements OnInit, OnDestroy {
                 this.onDocComplete.emit(true);
             }
         }
+        this.cdRef.markForCheck();
     }
 }
