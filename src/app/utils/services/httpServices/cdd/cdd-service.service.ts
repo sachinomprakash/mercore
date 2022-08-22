@@ -15,7 +15,16 @@ export class CddServiceService {
 
     stepperIndex = new Subject();
     searchField = new BehaviorSubject('');
-    selectedStepData = new BehaviorSubject('');
+    private selectedStepData = new BehaviorSubject(null);
+
+    getSelectedStepData(): Observable<any> {
+        return this.selectedStepData.asObservable();
+    }
+
+    setSelectedStepData(val: any): void {
+        this.selectedStepData.next(val);
+    }
+
     constructor(private httpService: HttpService) {}
     public getCaseById(caseId: number): Observable<any[]> {
         return this.httpService.getData(

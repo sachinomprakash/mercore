@@ -5,8 +5,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { CommonService } from 'src/app/utils/services/common/common.service';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
 import { ActivatedRoute } from '@angular/router';
-import { CDDDocRequests } from 'src/app/utils/constants/app.constant';
-import { Case, IDocRequest } from 'src/app/models/case.model';
+import { Case } from 'src/app/models/case.model';
 import { ProgresssummaryComponent } from '../progresssummary/progresssummary.component';
 import { MatDialog } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
@@ -100,10 +99,10 @@ export class CddWrapperComponent implements OnInit, DoCheck {
         }
     }
 
-    move(index: any) {
+    move(index: number): void {
         this.selectedIndex = index;
         this.selectedStepObj = this.entityDocs[index];
-        this.cddServiceService.selectedStepData.next(this.entityDocs[index]);
+        this.cddServiceService.setSelectedStepData(this.entityDocs[index]);
         this.stepperIndex = index;
     }
 

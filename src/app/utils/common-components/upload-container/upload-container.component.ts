@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+/* eslint-disable indent */
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output
+} from '@angular/core';
 import { finalize } from 'rxjs';
 import { IFile } from 'src/app/models/case.model';
 import { PersonModel } from 'src/app/models/cdd.model';
@@ -253,7 +262,7 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     this.document_id,
                     this.entityId,
                     this.sow_id
-                ).pipe(finalize(()=>    this.documentService.setvalue(true)))
+                )
                 .subscribe({
                     next: (res: any) => {
                         this.documentService.docUploaded.next({
@@ -267,9 +276,7 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     error: err => this.alertService.openSnackBar(err.error.message, 'error')
                 });
         }
-        console.log('saved');
-        
-        this.documentService.setvalue(true);
+        this.documentService.setMoveToNextDocType(true);
 
         if (this.files && this.files?.length) {
         }

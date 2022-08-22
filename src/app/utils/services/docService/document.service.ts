@@ -1,35 +1,19 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, shareReplay, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
 export class DocumentService {
-    moveToNextDocType = new BehaviorSubject(false);
+    private moveToNextDocType: Subject<boolean> = new Subject<boolean>();
     docUploaded = new Subject();
     userDocUploaded = new Subject();
     emptyDoc = new Subject();
 
-val:boolean;
-
-    constructor() {}
-
-    
-    public getvalue() : Observable<any> {
-        console.log('gets');
-        
-        return this.moveToNextDocType.asObservable();
+    public getMoveToNextDocType(): Subject<boolean> {
+        return this.moveToNextDocType;
     }
 
-    
-    public setvalue(v : boolean) {
-        console.log('setval', v);
-        
-        this.moveToNextDocType.next(v);
+    public setMoveToNextDocType(value: boolean): void {
+        this.moveToNextDocType.next(value);
     }
-    
-    
-
-    // nextDoc() {
-    //     this.moveToNextDocType.next(true);
-    // }
 }
