@@ -94,9 +94,12 @@
             <img src="assets/images/info-circle.png" alt="info-circle" /> Your information will save
             as you fill out the application.
         </p>
-        <ng-container *ngIf="case && selectedStepObj">
+        <ng-container>
             <div class="form-screen">
-                <span [ngSwitch]="selectedStepObj.name">
+                <span
+                    [ngSwitch]="selectedStepObj.name"
+                    *ngIf="case && selectedStepObj && !showThankYouScreen"
+                >
                     <div *ngSwitchCase="'Connected Individuals'">
                         <app-connected-individual
                             [entityId]="case.entity_id"
@@ -107,33 +110,22 @@
                         <app-additional-request
                             [entityId]="case.entity_id"
                             [allStepsValid]="allStepsvalid"
-                            (onNext)="move(4)"
+                            (onNext)="showThankYou()"
                             (addtionalRequestStepperValid)="addtionalRequestStepperStatus($event)"
                         >
                         </app-additional-request>
                     </div>
-                    <div *ngSwitchCase="'Company Profile'">
+                    <div *ngSwitchDefault>
                         <app-document-container [entityId]="case.entity_id" [caseId]="caseId">
                         </app-document-container>
                     </div>
-                    <!-- <div *ngSwitchCase="0">
-                        <app-company-profile [companyDocs]="companyDocs" [entityId]="case.entity_id" [caseId]="caseId">
-                        </app-company-profile>
-                    </div>
-                    <div *ngSwitchCase="1">
-                        <app-ownership-structure [ownershipDocs]="ownershipDocs" [entityId]="case.entity_id"
-                            [caseId]="caseId"></app-ownership-structure>
-                    </div>
-                    <div *ngSwitchCase="2">
-                    </div>
-                    <div *ngSwitchCase="3">
-
-                    </div>
-                    <div *ngSwitchCase="4">
-                        <app-cip-thankyou [applicationRef]="case?.application_number" [component]="'cdd'">
-                        </app-cip-thankyou>
-                    </div> -->
                 </span>
+                <app-cip-thankyou
+                    *ngIf="showThankYouScreen"
+                    [applicationRef]="case?.application_number"
+                    [component]="'cdd'"
+                >
+                </app-cip-thankyou>
             </div>
         </ng-container>
     </main>

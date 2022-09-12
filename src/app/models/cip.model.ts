@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export interface IAddress {
     country: number;
     address: string;
@@ -63,4 +65,19 @@ export class CIP {
         this.countries_of_intended_trade = obj.countries_of_intended_trade || [];
         this.legal_entity_form_id = obj.legal_entity_form_id || '';
     }
+}
+
+export class IStep {
+    label: string;
+    index: number;
+    image: string;
+    description: string;
+}
+
+export class CipStep {
+    label: string;
+    index: number;
+    completed: boolean;
+    editable: boolean;
+    route: string;
 }

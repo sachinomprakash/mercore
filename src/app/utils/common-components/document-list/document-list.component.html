@@ -17,8 +17,29 @@
                     >
                         <div class="d-flex align-item-center justify-content-center">
                             <div class="d-flex align-item-center">
-                                <mat-icon class="mr-1 doc-icon">info_outline</mat-icon>
-                                <span class="word-break list-style">{{ file.name }}</span>
+                                <mat-icon
+                                    class="mr-1 doc-icon"
+                                    [mdePopoverTriggerFor]="docInfo"
+                                    mdePopoverTriggerOn="hover"
+                                    mdePopoverPositionY="below"
+                                    #popoverTrigger="mdePopoverTrigger"
+                                    >info_outline</mat-icon
+                                >
+                                <mde-popover
+                                    #docInfo="mdePopover"
+                                    [mdePopoverOverlapTrigger]="false"
+                                >
+                                    <div class="popover__content">
+                                        <br />
+                                        <p class="popover__message">
+                                            {{
+                                                file?.description ||
+                                                    'This document type has no description'
+                                            }}
+                                        </p>
+                                    </div>
+                                </mde-popover>
+                                <span class="word-break list-style">{{ file?.name }}</span>
                             </div>
                             <div>
                                 <mat-checkbox

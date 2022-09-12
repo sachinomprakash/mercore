@@ -96,7 +96,6 @@ export class GuestAuthComponent implements OnInit {
             email: ['', [Validators.required, Validators.pattern(PatternConstants.email)]],
             password: ['', Validators.required]
         });
-        console.log(this.authForm);
     }
 
     onSubmit() {

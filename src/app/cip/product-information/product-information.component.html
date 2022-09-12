@@ -1,0 +1,12 @@
+<mat-selection-list #shoes [(ngModel)]="selectedOptions">
+    <mat-list-option
+        (click)="selectAll(shoes)"
+        [value]="0"
+        checkboxPosition="after"
+        (change)="selectAll($event)"
+        >All
+    </mat-list-option>
+    <mat-list-option *ngFor="let shoe of typesOfShoes">
+        {{ shoe }}
+    </mat-list-option>
+</mat-selection-list>

@@ -1,0 +1,25 @@
+<mat-stepper
+    class="step-indicator"
+    orientation="horizontal"
+    [linear]="true"
+    [disableRipple]="true"
+    #stepper
+    labelPosition="bottom"
+    [selectedIndex]="currentStep"
+>
+    <ng-template matStepperIcon="edit" let-index="index">
+        {{ index + 1 }}
+    </ng-template>
+    <div *ngFor="let stepDetails of steps">
+        <mat-step [editable]="false" active="true">
+            <ng-template matStepLabel>
+                <span class="d-flex step-label align-items-center">
+                    <mat-icon class="mr-2">schedule</mat-icon>{{ stepDetails.label }}
+                </span>
+                <img src="{{ stepDetails.image }}" class="pt-3 pb-3" alt="info-circle" />
+                <br />
+                <span>{{ stepDetails.description }}</span>
+            </ng-template>
+        </mat-step>
+    </div>
+</mat-stepper>

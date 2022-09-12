@@ -23,7 +23,6 @@ export class ConfirmEmailComponent implements OnInit {
         this.activatedRoute.params.subscribe({
             next: (res: any) => {
                 this.token = res.token;
-                console.log(res);
                 this.userService.verifyEmail(this.token).subscribe({
                     next: (res: any) => {},
                     error: (err: any) => {

@@ -1,0 +1,55 @@
+<div class="container">
+    <p class="heading">Company Type</p>
+    <p class="sub-heading">Please tell us what type of company you are onboarding</p>
+    <div class="grid-wrapper grid-col-auto">
+        <label for="radio-card-1" class="radio-card">
+            <input
+                type="radio"
+                name="radio-card"
+                id="radio-card-1"
+                value="corporate"
+                [(ngModel)]="corporateType"
+                [checked]="true"
+            />
+            <div class="card-content-wrapper" (click)="setValue('corporate')">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                    <img src="assets/images/corporate.svg" alt="corporate" />
+                    <h4>A Corporate Entity</h4>
+                    <h5>
+                        This includes small, medium ​ and large companies who are NOT financial
+                        institutions
+                    </h5>
+                </div>
+            </div>
+        </label>
+
+        <label for="radio-card-2" class="radio-card">
+            <input
+                type="radio"
+                name="radio-card"
+                id="radio-card-2"
+                value="finance"
+                [(ngModel)]="corporateType"
+            />
+            <div class="card-content-wrapper" (click)="setValue('finance')">
+                <span class="check-icon"></span>
+                <div class="card-content">
+                    <img src="assets/images/financial.svg" alt="" />
+                    <h4>A Financial Institution​</h4>
+                    <h5>This includes banks, insurers and other NBFIs.</h5>
+                </div>
+            </div>
+        </label>
+    </div>
+    <button
+        type="submit"
+        mat-flat-button
+        color="primary"
+        [disabled]="!corporateType"
+        class="w-100 my-4"
+        (click)="moveToNextStep()"
+    >
+        Next
+    </button>
+</div>

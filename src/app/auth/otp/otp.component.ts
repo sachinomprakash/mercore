@@ -104,7 +104,7 @@ export class OtpComponent implements OnInit, OnDestroy {
                 localStorage.setItem('refreshToken', res.result.refreshToken);
                 this.errorMessage = '';
                 this.loginSuccess = true;
-                this.router.navigate(['/customer/product-selection/']);
+                this.router.navigate(['/customer']);
             },
             error: (err: any) => {
                 this.errorMessage = err.error.message;
@@ -118,7 +118,6 @@ export class OtpComponent implements OnInit, OnDestroy {
                 } else if (this.errorCode.serverCode == serverStatusCode.otpExpire) {
                     this.alertService.openSnackBar(err.error.message, 'error');
                 }
-                console.log(this.errorCode);
             }
         });
     }

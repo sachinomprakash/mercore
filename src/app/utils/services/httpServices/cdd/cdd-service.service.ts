@@ -15,16 +15,7 @@ export class CddServiceService {
 
     stepperIndex = new Subject();
     searchField = new BehaviorSubject('');
-    private selectedStepData = new BehaviorSubject(null);
-
-    getSelectedStepData(): Observable<any> {
-        return this.selectedStepData.asObservable();
-    }
-
-    setSelectedStepData(val: any): void {
-        this.selectedStepData.next(val);
-    }
-
+    selectedStepData = new BehaviorSubject({});
     constructor(private httpService: HttpService) {}
     public getCaseById(caseId: number): Observable<any[]> {
         return this.httpService.getData(
@@ -44,10 +35,10 @@ export class CddServiceService {
         );
     }
 
-    getProgressSummary(caseId: any): Observable<object> {
-        // https://dev-app-api.mercore.com/case-task/v1/cases/25/summary
+    getProgressSummary(caseId: number, entityId: string): Observable<object> {
+        // https://dev-app-api.mercore.com/kyc/v1/cases/32/entity/62f55ba964095352cdf7c1b9/summary
         return this.httpService.getData(
-            `${this.apiUrl}${apiEndPoint.file.version}${apiEndPoint.file.cases}/${caseId}/summary`
+            `${this.kycAppUrl}${apiEndPoint.file.version}${apiEndPoint.file.cases}/${caseId}${apiEndPoint.file.entity}/${entityId}/summary`
         );
     }
 }

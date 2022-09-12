@@ -2,9 +2,7 @@ import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
-import { pickBy, identity } from 'lodash';
-import { IDocRequest } from 'src/app/models/case.model';
-import { CDDDocRequests } from 'src/app/utils/constants/app.constant';
+import { pickBy } from 'lodash';
 @Component({
     selector: 'app-progresssummary',
     templateUrl: './progresssummary.component.html',
@@ -25,6 +23,7 @@ export class ProgresssummaryComponent implements OnInit {
     completedDocs: any;
     searchString: any;
     filterDoc: any;
+    totalCount: number;
 
     constructor(
         private cddServiceService: CddServiceService,
@@ -32,63 +31,34 @@ export class ProgresssummaryComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.cddServiceService.getProgressSummary(this.data.caseId).subscribe((res: any) => {
-            this.summaryDocs = {
-                ...res.result,
-                entityDocs: [
-                    {
-                        name: 'Company Profile',
-                        files: this.filterEntityDocs(
-                            res.result.entityDocs,
-                            CDDDocRequests.arrayOfCompanyProfile
-                        ).files,
-                        progressStatus: this.getStatus(this.filterDoc)
+        this.getSummaryDetails();
+    }
+
+    getSummaryDetails() {
+        this.cddServiceService
+            .getProgressSummary(this.data.caseId, this.data.entityId)
+            .subscribe((res: any) => {
+                this.totalCount = res.result.entity_documents.length + 2;
+
+                this.summaryDocs = {
+                    ...res.result,
+                    additionalRequests: {
+                        docs: res.result.additional_requests,
+                        progressStatus: res.result.progressStatus.additional_requests
                     },
-                    {
-                        name: 'Ownership',
-                        files: this.filterEntityDocs(
-                            res.result.entityDocs,
-                            CDDDocRequests.arrayOfOwnershipDocs
-                        ).files,
-                        progressStatus: this.getStatus(this.filterDoc)
+                    personData: {
+                        docs: res.result.connected_individuals,
+                        progressStatus: res.result.progressStatus.connected_individuals
                     }
-                ]
-            };
-            this.allItems = Object.keys(res.result).length;
-            this.inProgressDocs = this.getSortedDocs('In Progress');
-            this.submittedDocs = this.getSortedDocs('Submitted');
-            this.completedDocs = this.getSortedDocs('Completed');
-            this.inProgressCount = this.getCount(this.inProgressDocs);
-            this.submittedDocsCount = this.getCount(this.submittedDocs);
-            this.completedDocsCount = this.getCount(this.completedDocs);
-        });
-        this.filterDocs({ target: { value: '' } });
-    }
-
-    filterEntityDocs(entityDocs: any, docs: any) {
-        let filteredDocs: any = [];
-        entityDocs.forEach((doc: IDocRequest) => {
-            docs.forEach((cpDocs: any) => {
-                if (cpDocs.replace(' ', '') === doc.name.replace(' ', '')) {
-                    doc?.files.map((i: any) => filteredDocs.push(i));
-                }
+                };
+                this.inProgressDocs = this.getSortedDocs('In Progress');
+                this.submittedDocs = this.getSortedDocs('Submitted');
+                this.completedDocs = this.getSortedDocs('Completed');
+                this.inProgressCount = this.getCount(this.inProgressDocs);
+                this.submittedDocsCount = this.getCount(this.submittedDocs);
+                this.completedDocsCount = this.getCount(this.completedDocs);
             });
-        });
-        this.filterDoc = filteredDocs;
-        return { files: filteredDocs };
-    }
-
-    getStatus(filteredDocs: any) {
-        const statusCount = filteredDocs.filter((doc: any) => {
-            return doc.progressStatus === 'Outstanding';
-        });
-        let status;
-        if (statusCount.length > 0) {
-            status = 'In Progress';
-        } else {
-            status = 'Completed';
-        }
-        return status;
+        this.filterDocs({ target: { value: '' } });
     }
 
     getSortedDocs(type: string) {
@@ -97,14 +67,11 @@ export class ProgresssummaryComponent implements OnInit {
                 this.summaryDocs.additionalRequests.progressStatus === type
                     ? this.summaryDocs.additionalRequests
                     : undefined,
-            entityDocs:
-                this.summaryDocs.entityDocs.filter(
-                    (doc: any) =>
-                        doc.progressStatus === type && doc.name !== 'Further Documentation'
-                ).length > 0
-                    ? this.summaryDocs.entityDocs.filter(
-                          (doc: any) =>
-                              doc.progressStatus === type && doc.name !== 'Further Documentation'
+            entity_documents:
+                this.summaryDocs.entity_documents.filter((doc: any) => doc.progressStatus === type)
+                    .length > 0
+                    ? this.summaryDocs.entity_documents.filter(
+                          (doc: any) => doc.progressStatus === type
                       )
                     : undefined,
             personData:
@@ -115,12 +82,11 @@ export class ProgresssummaryComponent implements OnInit {
     }
 
     getCount(obj: any) {
-        let count;
         const refinedObj = pickBy(obj, v => v !== undefined);
-        if (refinedObj['entityDocs'] && refinedObj['entityDocs'].length > 1) {
-            return (count = Object.keys(refinedObj).length + 1);
+        if (refinedObj['entity_documents'] && refinedObj['entity_documents'].length >= 1) {
+            return Object.keys(refinedObj).length - 1 + refinedObj['entity_documents'].length;
         } else {
-            return (count = Object.keys(refinedObj).length);
+            return Object.keys(refinedObj).length;
         }
     }
 

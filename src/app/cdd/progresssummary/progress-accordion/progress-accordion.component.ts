@@ -18,15 +18,21 @@ export class ProgressAccordionComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
-        this.companyDocs = this.summaryDocs?.entityDocs?.find(
-            (doc: any) => doc.name === 'Company Profile'
-        );
-        this.ownerShipDocs = this.summaryDocs?.entityDocs?.find(
-            (doc: any) => doc.name === 'Ownership'
-        );
+        const connectedIndividualOb = {
+            name: 'Connected Individuals',
+            progressStatus: this.summaryDocs?.personData?.progressStatus,
+            types: this.summaryDocs?.personData?.docs
+        };
         this.additionalRequests = this.summaryDocs?.additionalRequests;
         this.personDocs = this.summaryDocs?.personData;
-        this.additionalReqCount = this.additionalRequests?.items?.reduce(
+        if (this.personDocs) {
+            if (this.summaryDocs.entity_documents) {
+                this.summaryDocs.entity_documents?.splice(2, 0, connectedIndividualOb);
+            } else {
+                this.summaryDocs.entity_documents = [connectedIndividualOb];
+            }
+        }
+        this.additionalReqCount = this.additionalRequests?.docs?.reduce(
             (acc: any, val: any) => acc + val.questions.length,
             0
         );

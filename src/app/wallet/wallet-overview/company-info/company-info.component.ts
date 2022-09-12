@@ -73,8 +73,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log('---------------', this.companyInfo);
-
         this.isPhoneNumberValid = true;
         this.initForm(this.companyInfo);
         this.companyInfoForm.disable();
@@ -156,7 +154,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
                 name: val
             }));
         }
-        console.log('this.companyInfoForm.value------', this.companyInfoForm.value);
     }
     get constrols() {
         return this.companyInfoForm.controls;

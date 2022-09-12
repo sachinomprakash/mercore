@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, shareReplay, Subject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
@@ -8,6 +8,8 @@ export class DocumentService {
     docUploaded = new Subject();
     userDocUploaded = new Subject();
     emptyDoc = new Subject();
+
+    constructor() {}
 
     public getMoveToNextDocType(): Subject<boolean> {
         return this.moveToNextDocType;

@@ -1,0 +1,32 @@
+.main-wrap {
+    box-shadow: none !important;
+    position: relative;
+    .close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+    }
+    h2 {
+        font-family: Inter-Medium;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 30px;
+        color: #000;
+    }
+    p {
+        font-family: Inter-Regular;
+        color: var(--color-tertiary-tint);
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 140%;
+        & > span {
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--stepper-title);
+            line-height: 3.5rem;
+            cursor: pointer;
+        }
+    }
+}

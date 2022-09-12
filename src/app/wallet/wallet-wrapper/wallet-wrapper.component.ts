@@ -42,7 +42,6 @@ export class WalletWrapperComponent implements OnInit {
                           ]
                         : []
                 };
-                console.log(this.summaryDocs);
             }
         });
     }

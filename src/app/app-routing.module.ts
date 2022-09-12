@@ -39,10 +39,7 @@ const routes: Routes = [
     },
     {
         path: 'customer',
-        loadChildren: () =>
-            import('./customer-identification/customer-identification.module').then(
-                m => m.CustomerIdentificationModule
-            ),
+        loadChildren: () => import('./cip/cip.module').then(m => m.CipModule),
         canActivate: [AuthGuard]
     },
     {

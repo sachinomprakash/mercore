@@ -29,120 +29,61 @@
             <tr>
                 <td colspan="7" class="p-0">
                     <mat-accordion class="accordion-styles" multi>
-                        <!-- Company Profile documents -->
-                        <mat-expansion-panel [expanded]="isFirst" *ngIf="companyDocs">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <table>
-                                        <tr>
-                                            <td class="column-1">
-                                                <div class="d-flex">
-                                                    <h3>
-                                                        Company Profile
-                                                    </h3>
-                                                    <span
-                                                        class="number head d-flex align-items-center"
-                                                        >{{ companyDocs.files.length }}</span
-                                                    >
-                                                </div>
-                                            </td>
-                                            <td class="column-2 ">
-                                                <app-progress-button
-                                                    [progress]="companyDocs.progressStatus"
-                                                >
-                                                </app-progress-button>
-                                            </td>
-                                            <td class="column-3">
-                                                &nbsp;
-                                                <!-- <img
-                                                    src="assets/images/tick.svg"
-                                                /> -->
-                                            </td>
-                                            <td class="column-4">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-progress-table [docs]="companyDocs.files"></app-progress-table>
-                        </mat-expansion-panel>
-
                         <!-- Ownership structure -->
-                        <mat-expansion-panel *ngIf="ownerShipDocs">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <table>
-                                        <tr>
-                                            <td class="column-1">
-                                                <div class="d-flex">
-                                                    <h3>
-                                                        Ownership Structure
-                                                    </h3>
-                                                    <span
-                                                        class="number head d-flex align-items-center"
-                                                        >{{ ownerShipDocs.files.length }}</span
-                                                    >
-                                                </div>
-                                            </td>
-                                            <td class="column-2 ">
-                                                <app-progress-button
-                                                    [progress]="ownerShipDocs.progressStatus"
-                                                >
-                                                </app-progress-button>
-                                            </td>
-                                            <td class="column-3 m-0 p-0">
-                                                <!-- <img
-                                                    src="assets/images/tick.svg"
-                                                /> -->
-                                            </td>
-                                            <td class="column-4">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-progress-table [docs]="ownerShipDocs.files"></app-progress-table>
-                        </mat-expansion-panel>
-                        <!-- connected parties -->
-                        <mat-expansion-panel *ngIf="personDocs">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <table>
-                                        <tr>
-                                            <td class="column-1">
-                                                <div class="d-flex">
-                                                    <h3>
-                                                        Connected Parties
-                                                    </h3>
-                                                    <span
-                                                        class="number head d-flex align-items-center"
-                                                        >{{ personDocs.items.length }}</span
-                                                    >
-                                                </div>
-                                            </td>
-                                            <td class="column-2">
-                                                <app-progress-button
-                                                    [progress]="personDocs.progressStatus"
-                                                >
-                                                </app-progress-button>
-                                            </td>
-                                            <td class="column-3">
-                                                &nbsp;
-                                            </td>
-                                            <td class="column-4 ">
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-progress-table
-                                [docs]="personDocs.items"
-                                [type]="'person'"
-                            ></app-progress-table>
-                        </mat-expansion-panel>
+                        <div *ngIf="summaryDocs">
+                            <div *ngFor="let docs of summaryDocs.entity_documents">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            <table>
+                                                <tr>
+                                                    <td class="column-1">
+                                                        <div class="d-flex">
+                                                            <h3>
+                                                                {{ docs.name }}
+                                                            </h3>
+                                                            <span
+                                                                class="number head d-flex align-items-center"
+                                                                >{{ docs?.types?.length }}</span
+                                                            >
+                                                        </div>
+                                                    </td>
+                                                    <td class="column-2 ">
+                                                        <app-progress-button
+                                                            [progress]="docs.progressStatus"
+                                                        >
+                                                        </app-progress-button>
+                                                    </td>
+                                                    <td class="column-3 m-0 p-0">
+                                                        <!-- <img
+                                                            src="assets/images/tick.svg"
+                                                        /> -->
+                                                    </td>
+                                                    <td class="column-4">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div [ngSwitch]="docs?.name">
+                                        <app-progress-table
+                                            *ngSwitchCase="'Connected Individuals'"
+                                            [docs]="personDocs?.docs"
+                                            [type]="'person'"
+                                        ></app-progress-table>
+                                        <app-progress-table
+                                            *ngSwitchDefault
+                                            [docs]="docs?.types"
+                                        ></app-progress-table>
+                                    </div>
+                                    <div *ngIf="docs?.types?.length === 0">
+                                        <h2 class="noDocs">No documents requested</h2>
+                                    </div>
+                                </mat-expansion-panel>
+                            </div>
+                        </div>
+
                         <!-- additional requests -->
                         <mat-expansion-panel *ngIf="additionalRequests">
                             <mat-expansion-panel-header>
@@ -177,16 +118,14 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <app-progress-table
-                                [docs]="additionalRequests.items"
+                                [docs]="additionalRequests.docs"
                                 [type]="'additionalRequests'"
                             >
                             </app-progress-table>
                         </mat-expansion-panel>
                     </mat-accordion>
-                    <div
-                        *ngIf="!ownerShipDocs && !additionalRequests && !personDocs && !companyDocs"
-                    >
-                        <h3 class="noData">No data found</h3>
+                    <div *ngIf="!summaryDocs && !personDocs && !companyDocs">
+                        <h3 class="noData">No documents requested</h3>
                     </div>
                 </td>
             </tr>
