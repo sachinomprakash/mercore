@@ -27,7 +27,6 @@
                                     [completed]="stage.completed"
                                 >
                                     <ng-template matStepLabel>{{ stage.label }}</ng-template>
-                                    <router-outlet></router-outlet>
                                 </mat-step>
                                 <mat-step
                                     *ngSwitchCase="1"
@@ -36,7 +35,6 @@
                                     [completed]="stage.completed"
                                 >
                                     <ng-template matStepLabel>{{ stage.label }}</ng-template>
-                                    <router-outlet></router-outlet>
                                 </mat-step>
                                 <mat-step
                                     *ngSwitchCase="2"
@@ -45,7 +43,6 @@
                                     [completed]="stage.completed"
                                 >
                                     <ng-template matStepLabel>{{ stage.label }}</ng-template>
-                                    <router-outlet></router-outlet>
                                 </mat-step>
                                 <mat-step
                                     *ngSwitchCase="3"
@@ -55,7 +52,6 @@
                                 >
                                     <ng-template matStepLabel>{{ stage.label }}</ng-template>
                                 </mat-step>
-                                <!-- <router-outlet></router-outlet> -->
                             </div>
                         </div>
                     </mat-stepper>

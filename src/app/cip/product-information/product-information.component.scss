@@ -1,0 +1,108 @@
+$component-font-size: 14px;
+$letter-spacing: -0.2px;
+.request-card {
+    box-shadow: none !important;
+    border-radius: 0px !important;
+    &_content {
+        border: 1px solid var(--color-primary-contrast);
+        box-sizing: border-box;
+        border-radius: 5px;
+        padding: 15px;
+        overflow: auto;
+        &_title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-primary);
+            font-family: Inter-SemiBold;
+            letter-spacing: -0.2px;
+            h3 {
+                font-family: Inter-SemiBold;
+                letter-spacing: $letter-spacing;
+                font-size: 15px;
+                color: var(--color-primary);
+            }
+        }
+        p {
+            font-size: 12px;
+            color: var(--gray-background);
+            padding: 0px !important;
+        }
+        &_text {
+            h4 {
+                font-family: Inter-SemiBold;
+                letter-spacing: $letter-spacing;
+                font-size: $component-font-size;
+                color: var(--color-primary);
+                margin-bottom: 0;
+            }
+            p {
+                font-family: Inter-Regular;
+                font-size: $component-font-size;
+                color: var(--gray-background);
+                padding-top: 0;
+            }
+            &_link {
+                color: var(--color-primary);
+                font-family: Inter-Medium;
+                font-size: $component-font-size;
+            }
+        }
+    }
+}
+.bold-link {
+    font-weight: 400 !important;
+    font-size: 12px;
+}
+.other-category {
+    margin-top: -20px;
+    height: 90px;
+}
+::ng-deep {
+    .mat-checkbox-layout .mat-checkbox-label {
+        line-height: 24px;
+        font-size: 14px;
+        font-family: Inter-SemiBold;
+        color: var(--gray-background);
+    }
+    .mat-list-base .mat-list-option.mat-list-option .mat-list-item-content-reverse .mat-list-text {
+        font-family: Inter-Regular;
+        letter-spacing: $letter-spacing;
+        font-size: $component-font-size;
+    }
+    .mat-list-base
+        .mat-list-option.mat-list-option
+        .mat-list-item-content-reverse
+        .mat-list-text:hover {
+        background: transparent;
+    }
+    .mat-card {
+        min-width: 53vw;
+    }
+    .mat-form-field-appearance-outline .mat-form-field-prefix {
+        color: var(--gray-background) !important;
+    }
+    .reverse-select .mat-checkbox-layout {
+        flex-direction: row-reverse;
+        margin-right: 8px;
+    }
+    .mat-checkbox-inner-container {
+        margin-left: 10px !important;
+    }
+    .mat-list-base {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .request-card_content_title {
+        font-size: 13px;
+    }
+    ::ng-deep {
+        .mat-checkbox-inner-container {
+            height: 14px;
+            width: 14px;
+            margin-left: 8px !important;
+            margin-right: unset;
+        }
+    }
+}
