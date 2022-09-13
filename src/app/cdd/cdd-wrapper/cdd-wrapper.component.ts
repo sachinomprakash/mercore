@@ -40,6 +40,7 @@ export class CddWrapperComponent implements OnInit, DoCheck {
     connectedIndividuals: any;
     entityDocs: any = [];
     selectedStepObj: any;
+    showThankYouScreen: boolean;
 
     constructor(
         private commonService: CommonService,
@@ -58,32 +59,30 @@ export class CddWrapperComponent implements OnInit, DoCheck {
             }
         });
         this.getCaseData();
-        setTimeout(() => {
-            this.commonService.move.subscribe(x => {
-                x.move ? this.goForward(this.myStepper) : this.goBack(this.myStepper);
-            });
+        this.commonService.move.subscribe(x => {
+            x.move ? this.goForward(this.myStepper) : this.goBack(this.myStepper);
+        });
 
-            this.documentService.docUploaded.subscribe((res: any) => {
-                if (res) {
-                    this.selectedStepObj.types.find((type: any) => type._id === res._id).comment =
-                        res.comment;
-                    this.setSectionStatus(this.entityDocs);
-                }
+        this.documentService.docUploaded.subscribe((res: any) => {
+            const prevDoc = this.entityDocs.find((doc: any) => {
+                return doc.name === res.step;
             });
-            this.documentService.emptyDoc.subscribe((res: any) => {
-                this.selectedStepObj.types.find((type: any) => type._id === res._id).files =
-                    res.files;
+            if (res) {
+                prevDoc.types.find((type: any) => type._id === res._id).comment = res.comment;
                 this.setSectionStatus(this.entityDocs);
-            });
+            }
+        });
+        this.documentService.emptyDoc.subscribe((res: any) => {
+            this.selectedStepObj.types.find((type: any) => type._id === res._id).files = res.files;
+            this.setSectionStatus(this.entityDocs);
+        });
 
-            this.cddServiceService.stepperIndex.subscribe((res: any) => {
-                this.stepperIndex = res;
-            });
-
-            this.connectedIndividualsService.connctedIndividualStepperStatus.subscribe(
-                (res: any) => {}
-            );
-        }, 600);
+        this.cddServiceService.stepperIndex.subscribe((res: any) => {
+            if (res) {
+                const index = this.entityDocs.findIndex((doc: any) => doc.name === res);
+                this.stepperIndex = index;
+            }
+        });
     }
 
     ngDoCheck() {
@@ -131,7 +130,7 @@ export class CddWrapperComponent implements OnInit, DoCheck {
                 return section;
             });
             this.setSectionStatus(this.entityDocs);
-            this.entityDocs[2] = {
+            const connectedIndividualObj = {
                 description: null,
                 id: 10,
                 name: 'Connected Individuals',
@@ -145,25 +144,34 @@ export class CddWrapperComponent implements OnInit, DoCheck {
                 types: this.allQuestionhaveAnswerStatus,
                 completed: 'empty'
             });
+            const connecteIdividualIndex = this.entityDocs.findIndex(
+                (doc: any) => doc.name === 'Connected Individuals'
+            );
+            this.swap(this.entityDocs, connectedIndividualObj);
             this.move(0);
         });
     }
 
+    swap(input: any, connectedIndividualObj: any) {
+        input.splice(2, 0, connectedIndividualObj);
+        return input;
+    }
+
     setSectionStatus(sections: any) {
         const status = sections.map((section: any) => {
-            let fileStatus;
+            let stepStatus;
             switch (section.name) {
                 case 'Connected Individuals':
-                    fileStatus = section.types.length > 0;
+                    stepStatus = section.types.length > 0;
                     break;
                 case 'Additional Requests':
-                    fileStatus = true;
+                    stepStatus = true;
                     break;
                 default:
-                    fileStatus = section.types.every((types: any) => types.files?.length > 0);
+                    stepStatus = section.types.every((types: any) => types.files?.length > 0);
                     break;
             }
-            section.completed = fileStatus;
+            section.completed = stepStatus;
             return section;
         });
         this.entityDocs = status;
@@ -174,7 +182,8 @@ export class CddWrapperComponent implements OnInit, DoCheck {
             width: '85vw',
             panelClass: 'popup-wrap',
             data: {
-                caseId: this.caseId
+                caseId: this.caseId,
+                entityId: this.case.entity_id
             }
         });
     }
@@ -201,5 +210,8 @@ export class CddWrapperComponent implements OnInit, DoCheck {
                     this.connectedIndividualsService.connctedIndividualStepperStatus.next(false);
                 }
             });
+    }
+    showThankYou() {
+        this.showThankYouScreen = true;
     }
 }

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CDDRequest } from 'src/app/utils/constants/cdd.constants';
 import { modulePath } from 'src/app/utils/constants/route.constant';
 import { CommonService } from 'src/app/utils/services/common/common.service';
 import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';

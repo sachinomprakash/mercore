@@ -1,0 +1,72 @@
+<app-header-component></app-header-component>
+<div class="s-layout">
+    <!-- Sidebar -->
+    <div class="s-layout__sidebar">
+        <a class="s-sidebar__trigger">
+            <mat-icon>menu</mat-icon>
+        </a>
+        <nav class="s-sidebar__nav">
+            <div class="sideMenu">
+                <div class="stepbar p-sm-2 mt-2">
+                    <mat-stepper
+                        orientation="vertical"
+                        [linear]="isLinear"
+                        #stepper
+                        [selectedIndex]="selectedIndex"
+                        (selectionChange)="move($event.selectedIndex)"
+                    >
+                        <ng-template matStepperIcon="edit" let-index="index">
+                            {{ index + 1 }}
+                        </ng-template>
+                        <div *ngFor="let stage of stages; let i = index">
+                            <div [ngSwitch]="selectedIndex">
+                                <mat-step
+                                    *ngSwitchCase="0"
+                                    [stepControl]="formGroup0"
+                                    [editable]="stage.editable"
+                                    [completed]="stage.completed"
+                                >
+                                    <ng-template matStepLabel>{{ stage.label }}</ng-template>
+                                </mat-step>
+                                <mat-step
+                                    *ngSwitchCase="1"
+                                    [stepControl]="formGroup1"
+                                    [editable]="stage.editable"
+                                    [completed]="stage.completed"
+                                >
+                                    <ng-template matStepLabel>{{ stage.label }}</ng-template>
+                                </mat-step>
+                                <mat-step
+                                    *ngSwitchCase="2"
+                                    [stepControl]="formGroup2"
+                                    [editable]="stage.editable"
+                                    [completed]="stage.completed"
+                                >
+                                    <ng-template matStepLabel>{{ stage.label }}</ng-template>
+                                </mat-step>
+                                <mat-step
+                                    *ngSwitchCase="3"
+                                    [stepControl]="formGroup3"
+                                    [editable]="stage.editable"
+                                    [completed]="stage.completed"
+                                >
+                                    <ng-template matStepLabel>{{ stage.label }}</ng-template>
+                                </mat-step>
+                            </div>
+                        </div>
+                    </mat-stepper>
+                </div>
+                <div class="s-sidebar__bottom mx-auto d-flex text-center" (click)="showToast()">
+                    <img src="assets/images/info-circle.svg" alt="info-circle" />
+                    <p class="text-white ml-2">Having troubles? <span>Get help</span></p>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Content -->
+    <main class="s-layout__content pt-5">
+        <mat-card class="layout-card p-sm-5 mt-2 w-100">
+            <router-outlet></router-outlet>
+        </mat-card>
+    </main>
+</div>

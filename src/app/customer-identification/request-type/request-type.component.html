@@ -3,19 +3,6 @@
         >Please select Product(s) or Service(s)</mat-card-title
     >
     <mat-card-content>
-        <!-- <mat-form-field appearance="outline" class="w-100 mb-0">
-            <mat-label>Search Product type</mat-label>
-            <span class="material-icons" matPrefix> search </span>
-            <input
-                matInput
-                #search
-                placeholder="Search product type"
-                (keyup)="lazySearch.next($event)"
-            />
-        </mat-form-field> -->
-        <!-- <ng-container
-            *ngIf="(!searchedList || !searchedList.length) && !search.value; else searchedData"
-        > -->
         <div class="request-card_content">
             <ng-container *ngIf="productMasterData; else ghostUI">
                 <form [formGroup]="clientForm">
@@ -30,17 +17,7 @@
                             </mat-checkbox>
                         </div>
                         <!-- Description If have -->
-                        <p class="p-2">
-                            <!-- {{ item.description | shorten: descriptionMaxLength:'...' }}
-                                <span
-                                    *ngIf="item.description.length > descriptionMaxLength"
-                                    class="bold-link"
-                                    (click)="readMoreless(descriptionMaxLength)"
-                                    >{{
-                                        descriptionMaxLength == 200 ? 'Read more' : 'Read less'
-                                    }}</span
-                                > -->
-                        </p>
+                        <p class="p-2"></p>
                         <!-- Subcategory -->
                         <mat-selection-list
                             (selectionChange)="onSelect($event)"
@@ -66,64 +43,18 @@
                             </div> -->
                         </mat-selection-list>
                         <!-- Custome Product input -->
-                        <div class="other-category" *ngIf="showTextField()">
-                            <mat-form-field
-                                hintLabel="Character length limit"
-                                class="w-100"
-                                appearance="outline"
-                            >
-                                <mat-label>Enter Product or Service</mat-label>
-                                <input
-                                    matInput
-                                    #input
-                                    formControlName="otherProduct"
-                                    (keydown)="otherInput($event)"
-                                    maxlength="65"
-                                />
-                                <mat-hint align="end">{{ input.value?.length || 0 }}/65</mat-hint>
-                                <mat-error *ngIf="controls['otherProduct'].hasError('required')">
-                                    This field is required
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
                     </ng-container>
                 </form>
             </ng-container>
         </div>
         <!-- </ng-container> -->
 
-        <button
-            type="button"
-            color="primary"
-            mat-flat-button
-            class="w-100 mt-4"
-            [disabled]="isDisabled()"
-            (click)="next()"
-        >
+        <button type="button" color="primary" mat-flat-button class="w-100 mt-4" (click)="next()">
             Next
         </button>
     </mat-card-content>
 </mat-card>
 
-<ng-template #searchedData>
-    <div class="request-card_content">
-        <ng-container *ngIf="searchedList.length; else emptyList">
-            <mat-selection-list (selectionChange)="onSelect($event)" [disableRipple]="true" #item>
-                <mat-list-option
-                    [ngClass]="{ 'bg-color': i % 2 == 0 }"
-                    [value]="obj.id"
-                    *ngFor="let obj of searchedList; let i = index"
-                    [selected]="isChecked(obj.id)"
-                >
-                    {{ obj?.name }}
-                </mat-list-option>
-            </mat-selection-list>
-        </ng-container>
-        <ng-template #emptyList>
-            <div class="text-center">No results Found</div>
-        </ng-template>
-    </div>
-</ng-template>
 <!-- shimmer loader -->
 <ng-template #ghostUI>
     <div class="card p-3">

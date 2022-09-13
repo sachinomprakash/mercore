@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CddWrapperComponent } from './cdd-wrapper/cdd-wrapper.component';
 import { CddRoutingModule } from './cdd.routing.module';
 import { MaterialModule } from '../modules/material/material.module';
-import { CompanyProfileComponent } from './company-profile/company-profile.component';
-import { OwnershipStructureComponent } from './ownership-structure/ownership-structure.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConnectedIndividualComponent } from './connected-individual/connected-individual.component';
 import { AdditionalRequestComponent } from './additional-request/additional-request.component';
@@ -23,8 +21,6 @@ import { DocumentContainerComponent } from './document-container/document-contai
 @NgModule({
     declarations: [
         CddWrapperComponent,
-        CompanyProfileComponent,
-        OwnershipStructureComponent,
         ConnectedIndividualComponent,
         AdditionalRequestComponent,
         SourcespopupComponent,

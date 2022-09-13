@@ -389,8 +389,6 @@ export class CompanyInfoComponent implements OnInit {
     }
 
     selectValid(ev: any, type: string) {
-        console.log(ev);
-
         switch (type) {
             case 'industry':
                 if (!ev || ev?.length === 0) {

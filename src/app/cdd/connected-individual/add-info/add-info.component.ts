@@ -149,7 +149,7 @@ export class AddInfoComponent implements OnInit, OnChanges {
     activateRole(personRole: any) {
         const uniqueResultArray = this.roles.filter((objOne: any) => {
             return personRole.some((objTwo: any) => {
-                return objOne.personRoleId == objTwo.personRoleId;
+                return objOne.personRoleId == objTwo.id;
             });
         });
         uniqueResultArray.forEach((resArr: any) => {

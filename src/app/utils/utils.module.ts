@@ -1,3 +1,4 @@
+import { MdePopoverModule } from '@material-extended/mde';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LottieModule } from 'ngx-lottie';
@@ -30,6 +31,7 @@ import { StatusPipe } from './pipes/status.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { MultiselectSearchDropdownComponent } from './common-components/multiselect-search-dropdown/multiselect-search-dropdown.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ProgressIndicatorComponent } from './common-components/progress-indicator/progress-indicator.component';
 
 export function playerFactory() {
     return player;
@@ -59,7 +61,8 @@ export function playerFactory() {
         SearchPipe,
         StatusPipe,
         FilterPipe,
-        MultiselectSearchDropdownComponent
+        MultiselectSearchDropdownComponent,
+        ProgressIndicatorComponent
     ],
     imports: [
         CommonModule,
@@ -68,6 +71,7 @@ export function playerFactory() {
         FormsModule,
         ReactiveFormsModule,
         NgxMatSelectSearchModule,
+        MdePopoverModule,
         LottieModule.forRoot({ player: playerFactory })
     ],
     exports: [
@@ -93,7 +97,8 @@ export function playerFactory() {
         SearchPipe,
         StatusPipe,
         FilterPipe,
-        MultiselectSearchDropdownComponent
+        MultiselectSearchDropdownComponent,
+        ProgressIndicatorComponent
     ]
 })
 export class UtilsModule {}

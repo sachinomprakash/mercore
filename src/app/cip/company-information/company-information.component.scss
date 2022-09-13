@@ -1,0 +1,10 @@
+.country {
+    ::ng-deep {
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: -2px !important;
+        }
+        .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon {
+            height: 14px !important;
+        }
+    }
+}

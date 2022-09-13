@@ -1,6 +1,6 @@
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { apiEndPoint } from '../../constants/app.constant';
 import { HttpService } from './http.service';
 
@@ -9,9 +9,28 @@ import { HttpService } from './http.service';
 })
 export class CipService {
     syncCipData = new BehaviorSubject(false);
+    private moveToNextStep: Subject<boolean> = new Subject<boolean>();
+    private backToStep: Subject<boolean> = new Subject<boolean>();
     apiUrl = environment.kycApiURL;
     apiStaticUrl = environment.staticApiURL;
+
     constructor(private httpService: HttpService) {}
+
+    public getMoveToNextStep(): Subject<boolean> {
+        return this.moveToNextStep;
+    }
+
+    public setMoveToNextStep(value: boolean): void {
+        this.moveToNextStep.next(value);
+    }
+
+    public getBackToStep(): Subject<boolean> {
+        return this.backToStep;
+    }
+
+    public setBackToStep(value: boolean): void {
+        this.backToStep.next(value);
+    }
 
     addCIP(data: any, stage: string): Observable<any> {
         if (stage === '2') {

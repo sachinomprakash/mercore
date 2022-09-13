@@ -12,6 +12,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { StaticService } from 'src/app/utils/services/httpServices/static.service';
 import _ from 'lodash';
 import { DocumentService } from 'src/app/utils/services/docService/document.service';
+import { CddServiceService } from 'src/app/utils/services/httpServices/cdd/cdd-service.service';
 
 @Component({
     selector: 'app-connected-individual',
@@ -50,6 +51,7 @@ export class ConnectedIndividualComponent implements OnInit, OnChanges {
         private staticService: StaticService,
         private router: Router,
         private alertService: AlertService,
+        private cddServiceService: CddServiceService,
         public dialog: MatDialog // private bottomSheet: MatBottomSheet
     ) {}
 
@@ -251,6 +253,7 @@ export class ConnectedIndividualComponent implements OnInit, OnChanges {
                     return result;
                 });
                 this.personDocs = { files: res.result.documents };
+                this.cddServiceService.selectedStepData.next({ types: res.result.documents });
                 this.personDetails = res.result;
             });
     }

@@ -25,7 +25,9 @@
                         <mat-tab>
                             <ng-template mat-tab-label>
                                 View all
-                                <span class="number d-flex align-items-center">4</span>
+                                <span class="number d-flex align-items-center" *ngIf="totalCount">{{
+                                    totalCount
+                                }}</span>
                             </ng-template>
                             <app-progress-accordion
                                 [summaryDocs]="summaryDocs"

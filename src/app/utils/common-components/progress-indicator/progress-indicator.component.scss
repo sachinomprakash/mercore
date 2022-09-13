@@ -1,0 +1,36 @@
+.step-indicator {
+    .step-label {
+        position: relative;
+        left: 1rem;
+    }
+    ::ng-deep {
+        .mat-step-header .mat-step-icon-selected {
+            background: var(--stepper-title) !important;
+            color: #fff !important;
+        }
+        .mat-horizontal-stepper-header {
+            pointer-events: none !important;
+        }
+        .mat-step-header .mat-step-label.mat-step-label-active {
+            color: var(--stepper-title) !important;
+            font-family: Inter-Medium;
+        }
+        .mat-step-text-label {
+            font-family: Inter-Medium;
+            max-width: 8rem !important;
+            word-break: break-word !important;
+            white-space: pre-wrap !important;
+        }
+        .mat-stepper-label-position-bottom .mat-horizontal-stepper-header:hover {
+            background-color: #fff;
+            cursor: default;
+        }
+        .mat-step-header.cdk-keyboard-focused,
+        .mat-step-header.cdk-program-focused,
+        .mat-step-header:hover:not([aria-disabled]),
+        .mat-step-header:hover[aria-disabled='false'] {
+            background-color: transparent;
+            cursor: default;
+        }
+    }
+}

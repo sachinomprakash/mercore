@@ -19,7 +19,7 @@ export const apiEndPoint = {
         getLegalEntity: '/legal-entity-type',
         industrySector: '/industry-sector',
         getProductMaster: '/new-product-category-master',
-        getRoles: '/v1/shorthand-form-person-role-mapping/legal-form/',
+        getRoles: '/v1/shorthand-form-person-role-mapping/legal-form',
         sow: '/v1/source-of-wealth',
         sowDocs: '/v1/source-of-wealth-document',
         legalForm: '/v1/legal-entity-form',

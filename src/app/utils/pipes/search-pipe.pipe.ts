@@ -6,7 +6,7 @@ import { Pipe, PipeTransform, Injectable } from '@angular/core';
 @Injectable()
 export class SearchPipe implements PipeTransform {
     transform(value: any[], searchString: string, prop?: any): any {
-        if (!value) {
+        if (value.length === 0) {
             return [];
         }
         if (!searchString || !prop) {
@@ -32,9 +32,9 @@ export class SearchPipe implements PipeTransform {
             ? filterValue
             : [
                   {
-                      name: 'No Data Found',
-                      document: 'No Data Found',
-                      question: 'No Data Found',
+                      name: 'No data found',
+                      document: 'No data found',
+                      question: 'No data found',
                       progressStatus: null
                   }
               ];

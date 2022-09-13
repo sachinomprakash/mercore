@@ -2,8 +2,10 @@
     <div class="mb-4 navigation">
         <div class="d-flex justify-content-between">
             <span class="pointer outer-div" (click)="back()">
-                <mat-icon *ngIf="stepInfo.id !== 1" class="pointer mr-2">arrow_back</mat-icon>
-                <div *ngIf="stepInfo.id !== 1">Back</div>
+                <mat-icon *ngIf="stepInfo.name !== 'Entity Profile'" class="pointer mr-2"
+                    >arrow_back</mat-icon
+                >
+                <div *ngIf="stepInfo.name !== 'Entity Profile'">Back</div>
             </span>
             <span class="float-right outer-div pointer" (click)="forward()"
                 >Forward<mat-icon class="pointer ml-2"> arrow_forward</mat-icon></span
@@ -28,7 +30,7 @@
         <hr />
         <mat-card-content>
             <div class="row">
-                <div class="col-md-5 col-xl-5 col-sm-12 col-xs-12 pt-3">
+                <div class="col-md-4 col-xl-5 col-sm-12 col-xs-12 pt-3">
                     <app-document-list
                         (activeDocument)="activeDoc($event)"
                         (onDocComplete)="forward()"
@@ -36,8 +38,9 @@
                     ></app-document-list>
                 </div>
 
-                <div class="col-md-7 col-xl-7 col-sm-12 col-xs-12 pt-2">
+                <div class="col-md-8 col-xl-7 col-sm-12 col-xs-12 pt-2">
                     <app-upload-container
+                        [stepName]="stepInfo.name"
                         [docFiles]="files"
                         [entityId]="entityId"
                         [caseId]="caseId"

@@ -69,7 +69,8 @@ export class DashboardComponent implements OnInit {
                     width: '85vw',
                     panelClass: 'popup-wrap',
                     data: {
-                        caseId: record.id
+                        caseId: record.id,
+                        entityId: record.entity_id
                     }
                 });
                 break;

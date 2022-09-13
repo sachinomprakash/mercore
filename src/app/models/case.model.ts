@@ -10,6 +10,7 @@ export interface IFile {
     id: number;
     status: string;
     active: boolean;
+    description: string;
     meta: IFileMetaData[];
     files: IFileMetaData[];
 }

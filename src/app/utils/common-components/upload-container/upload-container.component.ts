@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { finalize } from 'rxjs';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { IFile } from 'src/app/models/case.model';
 import { PersonModel } from 'src/app/models/cdd.model';
 import { AlertService } from '../../services/alertService/alert.service';
@@ -10,14 +9,14 @@ import { FileUploadService } from '../../services/httpServices/upload/file-uploa
 @Component({
     selector: 'app-upload-container',
     templateUrl: './upload-container.component.html',
-    styleUrls: ['./upload-container.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./upload-container.component.scss']
 })
 export class UploadContainerComponent implements OnInit, OnChanges {
     @Input() docFiles?: IFile;
     @Input() entityId: any;
     @Input() caseId?: any;
     @Input() uploadComponent?: any;
+    @Input() stepName?: string;
     @Input() personInfo?: PersonModel;
     @Input() source_of_wealth_id?: any;
     @Output() setSourcesOfWealthId = new EventEmitter<any>();
@@ -28,16 +27,12 @@ export class UploadContainerComponent implements OnInit, OnChanges {
     comments: string;
     @Output() documentTypeValid = new EventEmitter<boolean>();
     validTypes = [
-        '.xls',
-        'application/vnd.ms-excel',
-        '.xlsx',
         'image/jpg',
         'application/pdf',
         'image/jpeg',
         'image/png',
         'text/csv',
         '.doc',
-        '.docx',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ];
     document_id: any;
@@ -62,7 +57,7 @@ export class UploadContainerComponent implements OnInit, OnChanges {
             this.docObj = x;
             this.mappingId = x.documentMappingId;
             this.typeId = x.id;
-            this.document_id = x._id;
+            this.document_id = x.documentId;
             this.deleteDocId = x._id;
             this.files = x.meta || x.files;
             if (x.comment) {
@@ -101,13 +96,24 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                                   this.uploadComponent,
                                   this.entityId,
                                   this.personInfo?._id,
-                                  this.document_id
+                                  this.deleteDocId
                               )
                               .subscribe({
                                   next: () => {
                                       this.files?.splice(index, 1);
+                                      this.docObj.files = this.files.filter(
+                                          (file: any) => !file.errored
+                                      );
+                                      this.documentService.docUploaded.next({
+                                          ...this.docObj,
+                                          comments: this.comments,
+                                          step: this.stepName
+                                      });
                                       if (!this.files?.length) {
                                           this.documentTypeValid.emit(false);
+                                          this.docObj.files = this.docObj.files.filter(
+                                              (file: any) => !file.errored
+                                          );
                                           this.documentService.emptyDoc.next({
                                               ...this.docObj,
                                               files: this.files
@@ -138,22 +144,27 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                 file['errored'] = true;
             });
         } else {
-            this.documentService.docUploaded.next({ ...this.docObj, comments: this.comments });
-            setTimeout(() => {
-                if (index === this.files.length) {
-                    return;
-                } else {
-                    const progressInterval = setInterval(() => {
-                        if (this.files[index].progress === 100) {
-                            clearInterval(progressInterval);
-                            this.uploadFilesSimulator(index + 1);
-                            this.commonService.getLatestValue(this.docObj);
-                        } else {
-                            this.files[index].progress += 5;
-                        }
-                    }, 200);
-                }
-            }, 100);
+            this.docObj.files = this.docObj.files.filter((file: any) => !file.errored);
+            this.documentService.docUploaded.next({
+                ...this.docObj,
+                comments: this.comments,
+                step: this.stepName
+            });
+            // setTimeout(() => {
+            if (index === this.files.length) {
+                return;
+            } else {
+                const progressInterval = setInterval(() => {
+                    if (this.files[index].progress === 100) {
+                        clearInterval(progressInterval);
+                        this.uploadFilesSimulator(index + 1);
+                        // this.commonService.getLatestValue(this.docObj);
+                    } else {
+                        this.files[index].progress += 5;
+                    }
+                }, 200);
+            }
+            // }, 100);
         }
     }
 
@@ -170,6 +181,12 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                 if (item.size > 10485760) {
                     item.progress = 100;
                     item.errored = true;
+                    this.docObj.files = this.docObj.files.filter((file: any) => !file.errored);
+                    this.documentService.docUploaded.next({
+                        ...this.docObj,
+                        comments: this.comments,
+                        step: this.stepName
+                    });
                 } else {
                     item.progress = 0;
                     arr.push(item);
@@ -181,44 +198,52 @@ export class UploadContainerComponent implements OnInit, OnChanges {
     }
 
     uploadFile(files: any) {
-        this.fileUploadService
-            .uploadFile(
-                files,
-                this.entityId,
-                this.typeId,
-                this.mappingId,
-                this.caseId,
-                this.uploadComponent,
-                this.document_id,
-                this.source_of_wealth_id,
-                this.personInfo?._id,
-                this.sow_id
-            )
-            .subscribe({
-                next: (res: any) => {
-                    let fileArr: any[];
-                    fileArr = res.result.files.filter((cv: any) => {
-                        return !this.files.find((e: any) => {
-                            return e.original_name == cv.original_name;
+        if (files.length > 0) {
+            this.fileUploadService
+                .uploadFile(
+                    files,
+                    this.entityId,
+                    this.typeId,
+                    this.mappingId,
+                    this.caseId,
+                    this.uploadComponent,
+                    this.document_id,
+                    this.source_of_wealth_id,
+                    this.personInfo?._id,
+                    this.sow_id
+                )
+                .subscribe({
+                    next: (res: any) => {
+                        let fileArr: any[];
+                        fileArr = res.result.files.filter((cv: any) => {
+                            return !this.files.find((e: any) => {
+                                return e.original_name == cv.original_name;
+                            });
                         });
-                    });
-                    fileArr.forEach(file => (file.progress = 0));
-                    fileArr = [...this.files, ...fileArr];
-                    const filtered = fileArr.filter(val => !files.includes(val));
-                    this.files = filtered;
-                    this.docObj.meta = this.files;
-                    this.uploadFilesSimulator(0);
-                    if (this.uploadComponent === 'soucesOfWealth') {
-                        this.setSourcesOfWealthId.emit(res.result._id);
-                        this.sow_id = res.result._id;
+                        fileArr.forEach(file => (file.progress = 0));
+                        fileArr = [...this.files, ...fileArr];
+                        const filtered = fileArr.filter(val => !files.includes(val));
+                        this.files = filtered;
+                        this.docObj.files = this.files;
+                        this.uploadFilesSimulator(0);
+                        if (this.uploadComponent === 'soucesOfWealth') {
+                            this.setSourcesOfWealthId.emit(res.result._id);
+                            this.sow_id = res.result._id;
+                        }
+                    },
+                    error: err => {
+                        if (err.error.httpStatusCode === 400) {
+                            this.alertService.openSnackBar(
+                                'File format is not supported.',
+                                'error'
+                            );
+                        } else {
+                            this.alertService.openSnackBar(err.error.message, 'error');
+                        }
+                        this.uploadFilesSimulator(0, 'error', files);
                     }
-                },
-                error: err => {
-                    console.log(err.error.message);
-                    this.alertService.openSnackBar(err.error.message, 'error');
-                    this.uploadFilesSimulator(0, 'error', files);
-                }
-            });
+                });
+        }
     }
 
     /**
@@ -250,15 +275,16 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     this.uploadComponent,
                     this.personInfo?._id,
                     this.deleteDocId,
-                    this.document_id,
+                    this.deleteDocId,
                     this.entityId,
                     this.sow_id
-                ).pipe(finalize(()=>    this.documentService.setvalue(true)))
+                )
                 .subscribe({
                     next: (res: any) => {
                         this.documentService.docUploaded.next({
                             ...this.prevDoc,
-                            comment: this.prevComment
+                            comment: this.prevComment,
+                            step: this.stepName
                         });
                         if (res.result._id) {
                             this.documentService.userDocUploaded.next(res.result);
@@ -267,13 +293,9 @@ export class UploadContainerComponent implements OnInit, OnChanges {
                     error: err => this.alertService.openSnackBar(err.error.message, 'error')
                 });
         }
-        console.log('saved');
-        
-        this.documentService.setvalue(true);
-
-        if (this.files && this.files?.length) {
-        }
+        this.documentService.setMoveToNextDocType(true);
     }
+
     get validFilesCount() {
         return this.files.filter(x => !x.errored && x._id).length;
     }

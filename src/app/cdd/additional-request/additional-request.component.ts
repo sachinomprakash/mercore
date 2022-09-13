@@ -48,14 +48,8 @@ export class AdditionalRequestComponent implements OnInit, OnChanges {
         this.commonservice.moveStep({ move: false });
     }
 
-    goToBack(category: string) {
-        if (category == 'Company Profile') {
-            this.cddServiceService.stepperIndex.next(0);
-        } else if (category == 'Ownership') {
-            this.cddServiceService.stepperIndex.next(1);
-        } else {
-            this.cddServiceService.stepperIndex.next(2);
-        }
+    goToSection(category: string) {
+        this.cddServiceService.stepperIndex.next(category);
     }
     textAreaValid() {
         this.isFormValid = this.dataSource.filter((item: any) => !item.answer);
